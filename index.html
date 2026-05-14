@@ -6,18 +6,21 @@
     <title>Murphy 梦晖 — Portfolio</title>
     <meta name="description" content="Murphy 梦晖 — 个人作品集（设计 / 摄影 / 内容运营 / 产品原型 / 实习思考 / 绘画）" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="./fonts.css" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-page="home">
     <div class="cursor" id="cursor" aria-hidden="true"></div>
     <div class="pageFade" id="pageFade" aria-hidden="true"></div>
     <div class="hoverPreview" id="hoverPreview" aria-hidden="true"></div>
+    <!-- SVG filters for subtle pink noisy trail -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <filter id="pinkNoise" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+        <feGaussianBlur stdDeviation="0.35" />
+      </filter>
+    </svg>
 
     <main class="shell">
       <header class="top">
@@ -38,11 +41,41 @@
       <div class="feed">
         <!-- 1) 名字动态展示（滚动触发） -->
         <section class="feedSection hero" data-animate="hero">
-          <div class="kicker">Portfolio</div>
+          <div class="slogan" aria-label="Slogan">
+            <div class="sloganEn">On the road, seeking a truer connection between people and the world.</div>
+            <div class="sloganZh">在路上，寻找人与世界更真实的连接。</div>
+          </div>
           <h1 class="heroTitle">
-            <span class="line heroName">MURPHY</span>
-            <span class="line heroNameZh">梦晖</span>
+            <span class="line">
+              <span class="nameCapsule" id="nameCapsule" aria-label="Murphy">
+                <span class="nameMarquee" aria-hidden="true">
+                  <span class="nameInner">
+                    <span class="nameTrack">
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                    </span>
+                    <span class="nameTrack clone" aria-hidden="true">
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                      <span class="w" data-t="MURPHY">MURPHY</span><span class="sep">—</span>
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </span>
           </h1>
+          <div class="heroNameZh">梦晖</div>
 
           <p class="heroSub">
             Designer / Photographer / Content Strategist / Product Thinker
@@ -64,10 +97,10 @@
             <span class="sectionHint">（分类筛选 / hover 预览）</span>
           </div>
           <div class="hr"></div>
-          <section aria-label="Project categories">
+          <div class="projectsSplit" aria-label="Projects split layout">
             <div class="catWall" id="homeFilters"></div>
-          </section>
-          <section class="workList" id="homeWorkList" aria-label="Project list"></section>
+            <section class="workList" id="homeWorkList" aria-label="Project list"></section>
+          </div>
         </section>
 
         <!-- 3) 个人简介 + 照片（放在 Projects 之后） -->

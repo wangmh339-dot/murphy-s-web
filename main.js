@@ -62,6 +62,53 @@ function initCursor() {
   window.__bindCursorHover = bindHover;
 }
 
+function initNameCapsuleMotion() {
+  const page = document.body.dataset.page;
+  if (page !== "home") return;
+  if (window.matchMedia("(pointer: coarse)").matches) return;
+  if (prefersReducedMotion()) return;
+
+  const capsule = qs("#nameCapsule");
+  if (!capsule) return;
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  let raf = null;
+  let tx = 0;
+  let ty = 0;
+  let ts = 0;
+
+  const tick = () => {
+    document.documentElement.style.setProperty("--nameX", String(tx));
+    document.documentElement.style.setProperty("--nameY", String(ty));
+    document.documentElement.style.setProperty("--nameS", String(ts));
+    raf = null;
+  };
+
+  const onMove = (e) => {
+    const r = capsule.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    tx = clamp(dx * 0.03, -18, 18);
+    ty = clamp(dy * 0.03, -14, 14);
+    ts = clamp(Math.abs(dx) + Math.abs(dy), 0, 90);
+    if (!raf) raf = requestAnimationFrame(tick);
+  };
+
+  window.addEventListener("mousemove", onMove, { passive: true });
+}
+
+function initNameMarqueeStart() {
+  // 进入页面后缓慢开始触发循环滚动
+  const page = document.body.dataset.page;
+  if (page !== "home") return;
+  if (prefersReducedMotion()) return;
+  window.setTimeout(() => {
+    document.body.classList.add("isMarqueeOn");
+  }, 650);
+}
+
 function initMagnetism() {
   if (window.matchMedia("(pointer: coarse)").matches) return;
   if (prefersReducedMotion()) return;
@@ -292,6 +339,9 @@ function initHomeProjectsEmbed() {
       active === "all" ? projects : projects.filter((p) => String(p.category || "") === String(active));
 
     // 你的需求：不在 feed 里显示卡片图；而是在鼠标旁边出现图片预览
+    if (!prefersReducedMotion()) listWrap.classList.add("isSwitching");
+    window.setTimeout(
+      () => {
     listWrap.innerHTML = filtered
       .map((p) => {
         const sub = [p.year, p.category].filter(Boolean).join(" · ");
@@ -306,17 +356,23 @@ function initHomeProjectsEmbed() {
               href="./project.html?id=${encodeURIComponent(p.id)}"
             >
               <div class="workTitle">${escapeHtml(p.title)}</div>
-              <div class="workSub">${escapeHtml(sub)}</div>
             </a>
-            <div class="workArrow" aria-hidden="true">↗</div>
+            <div class="workRight">
+              <div class="workMeta">${escapeHtml(sub)}</div>
+              <div class="workArrow" aria-hidden="true">↗</div>
+            </div>
           </div>
         `;
       })
       .join("");
 
-    initMagnetism();
-    if (window.__bindCursorHover) window.__bindCursorHover();
-    initHoverPreviewForLinks(listWrap);
+        if (!prefersReducedMotion()) listWrap.classList.remove("isSwitching");
+        initMagnetism();
+        if (window.__bindCursorHover) window.__bindCursorHover();
+        initHoverPreviewForLinks(listWrap);
+      },
+      prefersReducedMotion() ? 0 : 120
+    );
   };
 
   renderFilters();
@@ -426,9 +482,11 @@ function initWorkPage() {
                 href="./project.html?id=${encodeURIComponent(p.id)}"
               >
                 <div class="workTitle">${escapeHtml(p.title)}</div>
-                <div class="workSub">${escapeHtml(sub)}</div>
               </a>
-              <div class="workArrow" aria-hidden="true">↗</div>
+              <div class="workRight">
+                <div class="workMeta">${escapeHtml(sub)}</div>
+                <div class="workArrow" aria-hidden="true">↗</div>
+              </div>
             </div>
           `;
         })
@@ -457,11 +515,13 @@ function initHoverPreviewForLinks(root) {
   if (!preview) return;
 
   if (!preview.dataset.ready) {
-    preview.innerHTML = `<div class="img"></div><div class="cap"></div>`;
+    // 浮层只负责图片预览；标题改为在当前 work 单项下方显示
+    preview.innerHTML = `<div class="img"></div>`;
     preview.dataset.ready = "1";
   }
   const img = qs(".img", preview);
-  const cap = qs(".cap", preview);
+  let lastLink = null;
+  let lastItem = null;
 
   let tx = 0;
   let ty = 0;
@@ -481,17 +541,23 @@ function initHoverPreviewForLinks(root) {
 
   const show = (el) => {
     const url = el.getAttribute("data-preview") || "";
-    const text = el.getAttribute("data-cap") || "";
     if (img) {
       img.style.backgroundImage = url ? `url("${url}")` : "";
     }
-    if (cap) cap.textContent = text;
     preview.classList.add("isOn");
     window.addEventListener("mousemove", onMove, { passive: true });
+    const item = el.closest(".workItem");
+    if (lastItem && lastItem !== item) lastItem.classList.remove("isHoveringItem");
+    if (item) item.classList.add("isHoveringItem");
+    lastItem = item;
+    lastLink = el;
   };
   const hide = () => {
     preview.classList.remove("isOn");
     window.removeEventListener("mousemove", onMove);
+    if (lastItem) lastItem.classList.remove("isHoveringItem");
+    lastItem = null;
+    lastLink = null;
   };
 
   qsa(".workLink", root || document).forEach((a) => {
@@ -583,6 +649,8 @@ function boot() {
   initBackgroundVariant();
   initYear();
   initCursor();
+  initNameCapsuleMotion();
+  initNameMarqueeStart();
   initMagnetism();
   initPageFade();
   initHomeProjectsEmbed();

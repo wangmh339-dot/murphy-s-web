@@ -1,0 +1,46 @@
+/* 本地字体（离线/不走 Google Fonts），用于解决加载超时问题。
+   ⚠️ 为了避免仍然“超时”，这里只保留当前页面实际用到的最小集合，并只引用 woff2（体积更小）。 */
+
+/* Space Grotesk（主视觉与英文） */
+@font-face{
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("./assets/fonts/space-grotesk/files/space-grotesk-latin-300-normal.woff2") format("woff2");
+}
+@font-face{
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./assets/fonts/space-grotesk/files/space-grotesk-latin-600-normal.woff2") format("woff2");
+}
+
+/* Bebas Neue（Work 分类大字） */
+@font-face{
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/bebas-neue/files/bebas-neue-latin-400-normal.woff2") format("woff2");
+}
+
+/* Inter（正文/界面小字） */
+@font-face{
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/inter/files/inter-latin-400-normal.woff2") format("woff2");
+}
+@font-face{
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/fonts/inter/files/inter-latin-500-normal.woff2") format("woff2");
+}
+
+/* 中文不再强制下载 Noto Sans SC（文件巨大，容易导致加载慢/超时）
+   直接用系统中文字体回退（PingFang SC / Microsoft YaHei 等） */
