@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Work — Murphy 梦晖</title>
+    <meta name="description" content="Murphy 梦晖 — Work / 项目列表" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="work">
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="pageFade" id="pageFade" aria-hidden="true"></div>
+    <div class="hoverPreview" id="hoverPreview" aria-hidden="true"></div>
+
+    <main class="shell">
+      <header class="top">
+        <div class="brand">
+          <a class="brandLink magnetic" href="./index.html" data-cursor="hover">
+            <span class="brandEn">Murphy</span>
+            <span class="brandZh">梦晖</span>
+          </a>
+        </div>
+        <nav class="topNav" aria-label="Primary">
+          <a class="magnetic" data-cursor="hover" href="./index.html">Home</a>
+          <a class="magnetic" data-cursor="hover" href="./work.html" aria-current="page">Projects</a>
+          <a class="magnetic" data-cursor="hover" href="./index.html#about">About</a>
+          <a class="magnetic" data-cursor="hover" href="./resume.html">Resume</a>
+        </nav>
+      </header>
+
+      <section aria-label="Project categories">
+        <div class="catWall" id="filters"></div>
+      </section>
+
+      <section class="workList" id="workList" aria-label="Project list"></section>
+
+      <footer class="footer">
+        <a class="navItem magnetic" href="./info.html" data-cursor="hover">Information</a>
+        <div style="height: 10px"></div>
+        <span>© <span id="year"></span> Murphy 梦晖</span>
+      </footer>
+    </main>
+
+    <script src="./projects.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

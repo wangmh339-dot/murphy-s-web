@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project — Murphy 梦晖</title>
+    <meta name="description" content="Murphy 梦晖 — Project detail" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="project">
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="pageFade" id="pageFade" aria-hidden="true"></div>
+
+    <main class="shell">
+      <header class="top">
+        <div class="brand">
+          <a class="brandLink magnetic" href="./index.html" data-cursor="hover">
+            <span class="brandEn">Murphy</span>
+            <span class="brandZh">梦晖</span>
+          </a>
+        </div>
+        <nav class="topNav" aria-label="Primary">
+          <a class="magnetic" data-cursor="hover" href="./index.html">Home</a>
+          <a class="magnetic" data-cursor="hover" href="./work.html">Projects</a>
+          <a class="magnetic" data-cursor="hover" href="./index.html#about">About</a>
+          <a class="magnetic" data-cursor="hover" href="./resume.html">Resume</a>
+        </nav>
+      </header>
+
+      <div class="projectHeader">
+        <a class="navItem magnetic" href="./work.html" data-cursor="hover">← Back to Work</a>
+        <h1 class="projectName" id="projectName">Project</h1>
+        <p class="projectDeck" id="projectDeck"></p>
+      </div>
+
+      <div class="projectCover" id="projectCover" role="img" aria-label="Project cover"></div>
+
+      <section class="projectGrid" aria-label="Project content">
+        <div class="card">
+          <div class="cardTitle">DETAILS</div>
+          <p id="projectDetails"></p>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">META</div>
+          <div class="projectGrid" id="projectMeta" style="margin-top: 0; grid-template-columns: 1fr; gap: 12px"></div>
+          <div style="height: 14px"></div>
+          <div id="projectLink"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year"></span> Murphy 梦晖</span>
+      </footer>
+    </main>
+
+    <script src="./projects.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

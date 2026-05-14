@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Murphy 梦晖 — Portfolio</title>
+    <meta name="description" content="Murphy 梦晖 — 个人作品集（设计 / 摄影 / 内容运营 / 产品原型 / 实习思考 / 绘画）" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="home">
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="pageFade" id="pageFade" aria-hidden="true"></div>
+    <div class="hoverPreview" id="hoverPreview" aria-hidden="true"></div>
+
+    <main class="shell">
+      <header class="top">
+        <div class="brand">
+          <a class="brandLink magnetic" href="./index.html" data-cursor="hover">
+            <span class="brandEn">Murphy</span>
+            <span class="brandZh">梦晖</span>
+          </a>
+        </div>
+        <nav class="topNav" aria-label="Primary">
+          <a class="magnetic" data-cursor="hover" href="./index.html" aria-current="page">Home</a>
+          <a class="magnetic" data-cursor="hover" href="#projects">Projects</a>
+          <a class="magnetic" data-cursor="hover" href="#about">About</a>
+          <a class="magnetic" data-cursor="hover" href="./resume.html">Resume</a>
+        </nav>
+      </header>
+
+      <div class="feed">
+        <!-- 1) 名字动态展示（滚动触发） -->
+        <section class="feedSection hero" data-animate="hero">
+          <div class="kicker">Portfolio</div>
+          <h1 class="heroTitle">
+            <span class="line heroName">MURPHY</span>
+            <span class="line heroNameZh">梦晖</span>
+          </h1>
+
+          <p class="heroSub">
+            Designer / Photographer / Content Strategist / Product Thinker
+            <br />
+            我专注于<span class="accent">高级感</span>与<span class="accent">创意交互</span>的叙事呈现，作品涵盖设计、摄影、内容运营、产品原型与绘画。
+          </p>
+
+          <div class="homeLinks">
+            <a class="navItem magnetic" href="#projects" data-cursor="hover">Projects</a>
+            <a class="navItem magnetic" href="./info.html" data-cursor="hover">Information</a>
+            <a class="navItem magnetic" href="mailto:your@email.com" data-cursor="hover">Email</a>
+          </div>
+        </section>
+
+        <!-- 2) Projects（直接嵌入 feed 流：分类大字 + 列表 + hover 预览） -->
+        <section class="feedSection embeddedProjects" data-animate="fade" id="projects">
+          <div class="sectionTitle">
+            <span>Projects</span>
+            <span class="sectionHint">（分类筛选 / hover 预览）</span>
+          </div>
+          <div class="hr"></div>
+          <section aria-label="Project categories">
+            <div class="catWall" id="homeFilters"></div>
+          </section>
+          <section class="workList" id="homeWorkList" aria-label="Project list"></section>
+        </section>
+
+        <!-- 3) 个人简介 + 照片（放在 Projects 之后） -->
+        <section class="feedSection" data-animate="fade" id="about">
+          <div class="sectionTitle">
+            <span>About</span>
+            <span class="sectionHint">（个人简介）</span>
+          </div>
+          <div class="hr"></div>
+
+          <div class="aboutRow">
+            <div class="avatarWrap">
+              <img class="avatarImg" src="./assets/profile-placeholder.svg" alt="Murphy 梦晖 个人照片" />
+              <div class="avatarHint">把你的照片替换为：assets/profile.jpg（或直接改这里的 src）</div>
+            </div>
+
+            <div class="aboutText card">
+              <div class="cardTitle">BIO</div>
+              <p>
+                你好，我是 Murphy（梦晖）。我关注高级感与创意交互的表达，擅长将设计、摄影与内容策略整合为清晰的作品叙事。
+                <br /><br />
+                你可以把这段替换成：你的方向（例如视觉/交互/产品/内容）、你擅长的技能、你正在寻找的机会，以及一句你想表达的个人态度。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3) 精选图集（摄影/绘画占位，可替换为真实图片） -->
+        <section class="feedSection" data-animate="fade">
+          <div class="sectionTitle">
+            <span>Selected</span>
+            <span class="sectionHint">（图集预览）</span>
+          </div>
+          <div class="hr"></div>
+          <div class="gallery" aria-label="Selected gallery">
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=photography">
+              <div class="tileBg g1"></div>
+              <div class="tileMeta">
+                <div class="tileTitle">Photography</div>
+                <div class="tileSub">城市 / 情绪 / 叙事</div>
+              </div>
+            </a>
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=painting">
+              <div class="tileBg g2"></div>
+              <div class="tileMeta">
+                <div class="tileTitle">Painting</div>
+                <div class="tileSub">练习 / 色彩 / 形体</div>
+              </div>
+            </a>
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=design">
+              <div class="tileBg g3"></div>
+              <div class="tileMeta">
+                <div class="tileTitle">Design</div>
+                <div class="tileSub">视觉系统 / 交互 / 品牌</div>
+              </div>
+            </a>
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=content">
+              <div class="tileBg g4"></div>
+              <div class="tileMeta">
+                <div class="tileTitle">Content Ops</div>
+                <div class="tileSub">策略 / 增长 / 复盘</div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- 4) Information/联系 -->
+        <section class="feedSection" data-animate="fade">
+          <div class="sectionTitle">
+            <span>Information</span>
+            <span class="sectionHint">（简介与联系）</span>
+          </div>
+          <div class="hr"></div>
+          <div class="infoGrid">
+            <div class="card">
+              <div class="cardTitle">ABOUT</div>
+              <p>
+                你好，我是 Murphy（梦晖）。我喜欢把克制的排版、创意视觉与动态交互结合在一起，让作品“讲清楚也好看”。
+              </p>
+            </div>
+            <div class="card">
+              <div class="cardTitle">CONTACT</div>
+              <p>
+                <a class="magnetic" data-cursor="hover" href="mailto:your@email.com">your@email.com</a>
+                <br /><br />
+                <span style="color: var(--dim)">（可选）把 Instagram / 小红书 / Behance 链接替换到这里。</span>
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>© <span id="year"></span> Murphy 梦晖</span>
+      </footer>
+    </main>
+
+    <script src="./projects.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>
