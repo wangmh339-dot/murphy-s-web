@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Resume — Murphy 梦晖</title>
-    <meta name="description" content="Murphy 梦晖 — Resume" />
+    <title>Resume — Murphy Ong 王梦晖</title>
+    <meta name="description" content="Murphy Ong 王梦晖 — Resume" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./fonts.css" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
+    <link rel="stylesheet" href="./styles.css?v=20260514_4" />
   </head>
   <body data-page="resume">
     <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -17,8 +17,8 @@
       <header class="top">
         <div class="brand">
           <a class="brandLink magnetic" href="./index.html" data-cursor="hover">
-            <span class="brandEn">Murphy</span>
-            <span class="brandZh">梦晖</span>
+            <span class="brandEn">Murphy Ong</span>
+            <span class="brandZh">王梦晖</span>
           </a>
         </div>
         <nav class="topNav" aria-label="Primary">
@@ -32,32 +32,32 @@
       <div class="pageTitle">Resume</div>
       <div class="hr"></div>
 
-      <section class="projectGrid" aria-label="Resume content">
-        <div class="card">
-          <div class="cardTitle">DOWNLOAD</div>
-          <p>
-            把你的简历 PDF 放到：<span style="color: var(--fg)">assets/resume.pdf</span>
-            <br /><br />
-            然后这个按钮就能直接下载：
+      <section class="projectGrid" aria-label="Resume actions">
+        <div class="card resumeTopCard">
+          <div class="cardTitle">RESUME PDF</div>
+          <p class="bioCopy">
+            <span class="bioEn">View / download my resume:</span>
+            <br />
+            <span class="bioZh">在线查看 / 下载我的简历：</span>
             <br /><br />
             <a class="magnetic" data-cursor="hover" href="./assets/resume.pdf" target="_blank" rel="noreferrer">打开简历 PDF ↗</a>
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="cardTitle">NOTE</div>
-          <p>
-            如果你把简历文件名改成别的，只需要把本页链接（href）换成你的文件名即可。
+            <span style="color: var(--dim)"> / </span>
+            <a class="magnetic" data-cursor="hover" href="./assets/resume.pdf" download>下载 PDF</a>
           </p>
         </div>
       </section>
 
+      <!-- 直接铺满展示 PDF（在卡片下面，撑满屏幕高度） -->
+      <section class="resumeFull" aria-label="Resume PDF">
+        <embed src="./assets/resume.pdf#view=Fit&toolbar=1&navpanes=0" type="application/pdf" />
+      </section>
+
       <footer class="footer">
-        <span>© <span id="year"></span> Murphy 梦晖</span>
+        <span>© <span id="year"></span> Murphy Ong 王梦晖</span>
       </footer>
     </main>
 
-    <script src="./projects.js"></script>
-    <script src="./main.js"></script>
+    <script src="./projects.js?v=20260514_4"></script>
+    <script src="./main.js?v=20260514_4"></script>
   </body>
 </html>

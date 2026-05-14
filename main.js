@@ -28,8 +28,9 @@ function initCursor() {
   let raf = null;
 
   const tick = () => {
-    x += (tx - x) * 0.16;
-    y += (ty - y) * 0.16;
+    // 轻微拖动感：比跟手慢一点，但不“黏”
+    x += (tx - x) * 0.14;
+    y += (ty - y) * 0.14;
     cursor.style.left = `${x}px`;
     cursor.style.top = `${y}px`;
     raf = requestAnimationFrame(tick);
@@ -38,9 +39,11 @@ function initCursor() {
   const onMove = (e) => {
     tx = e.clientX;
     ty = e.clientY;
-    cursor.style.opacity = "1";
-    if (!raf) raf = requestAnimationFrame(tick);
   };
+
+  // 进入页面就启动（避免看起来“不跟随”）
+  cursor.style.opacity = "1";
+  raf = requestAnimationFrame(tick);
 
   window.addEventListener("mousemove", onMove, { passive: true });
   window.addEventListener("mouseleave", () => (cursor.style.opacity = "0"), { passive: true });
@@ -107,6 +110,134 @@ function initNameMarqueeStart() {
   window.setTimeout(() => {
     document.body.classList.add("isMarqueeOn");
   }, 650);
+}
+
+function initAboutPhotoBalance() {
+  const page = document.body.dataset.page;
+  if (page !== "home") return;
+
+  const wrap = qs(".avatarWrap");
+  const textCard = qs(".aboutText.card");
+  if (!wrap || !textCard) return;
+  const imgs = qsa("img.avatarImg", wrap);
+  if (imgs.length < 2) return;
+
+  const apply = () => {
+    // 让左侧图片区块总高度 = 右侧文字卡片高度
+    const h = Math.round(textCard.getBoundingClientRect().height);
+    if (!h || h < 200) return;
+    wrap.style.height = `${h}px`;
+
+    // 两张图平分高度（保留分割线 1px）
+    const divider = 1;
+    const each = Math.max(120, Math.floor((h - divider) / 2));
+    imgs.forEach((img) => {
+      img.style.height = `${each}px`;
+    });
+  };
+
+  // 初次与字体加载后各算一次，避免字体载入导致高度变化
+  requestAnimationFrame(apply);
+  window.setTimeout(apply, 350);
+  window.setTimeout(apply, 900);
+
+  let t = null;
+  window.addEventListener(
+    "resize",
+    () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(apply, 120);
+    },
+    { passive: true }
+  );
+}
+
+function initAvatarTilt() {
+  const page = document.body.dataset.page;
+  if (page !== "home") return;
+  if (window.matchMedia("(pointer: coarse)").matches) return;
+  if (prefersReducedMotion()) return;
+
+  const wrap = qs(".avatarWrap");
+  const tilt = qs(".avatarTilt", wrap || document);
+  if (!wrap || !tilt) return;
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  let raf = null;
+  let rx = 0;
+  let ry = 0;
+  let trx = 0;
+  let tryy = 0;
+
+  const tick = () => {
+    rx += (trx - rx) * 0.18;
+    ry += (tryy - ry) * 0.18;
+    tilt.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    raf = requestAnimationFrame(tick);
+  };
+
+  const onMove = (e) => {
+    const r = wrap.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dx = (e.clientX - cx) / (r.width / 2);
+    const dy = (e.clientY - cy) / (r.height / 2);
+
+    // 再加大约 15%
+    tryy = clamp(dx * 8.6, -10, 10); // rotateY
+    trx = clamp(-dy * 6.9, -8, 8);   // rotateX
+  };
+
+  const onEnter = () => {
+    wrap.classList.add("isTilting");
+    if (!raf) raf = requestAnimationFrame(tick);
+  };
+  const onLeave = () => {
+    wrap.classList.remove("isTilting");
+    trx = 0;
+    tryy = 0;
+    window.setTimeout(() => {
+      if (Math.abs(rx) < 0.05 && Math.abs(ry) < 0.05) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+    }, 280);
+  };
+
+  wrap.addEventListener("mouseenter", onEnter);
+  wrap.addEventListener("mouseleave", onLeave);
+  wrap.addEventListener("mousemove", onMove);
+}
+
+function initHomeScrollBridge() {
+  const page = document.body.dataset.page;
+  if (page !== "home") return;
+  if (prefersReducedMotion()) return;
+
+  const projects = qs("#projects");
+  if (!projects) return;
+  document.body.classList.add("hasBridge");
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  let raf = null;
+
+  const update = () => {
+    raf = null;
+    const vh = window.innerHeight || 1;
+    const top = projects.getBoundingClientRect().top;
+    // Projects 从屏幕底部进入到 1/4 高度的过程：0 -> 1
+    const p = 1 - clamp((top - vh * 0.25) / (vh * 0.75), 0, 1);
+    document.body.style.setProperty("--bridge", p.toFixed(3));
+  };
+
+  const onScroll = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
 }
 
 function initMagnetism() {
@@ -219,11 +350,9 @@ function buildCategories(projects) {
     const key = p.category || "other";
     map.set(key, (map.get(key) || 0) + 1);
   });
-  const order = ["all", "design", "photography", "content", "reflection", "product", "painting", "other"];
+  const order = ["product", "design", "visual", "notes", "lab", "other"];
   const result = [];
-  result.push({ key: "all", label: "all", count: projects.length });
   order
-    .filter((k) => k !== "all")
     .forEach((k) => {
       if (map.has(k)) result.push({ key: k, label: k, count: map.get(k) });
     });
@@ -244,12 +373,11 @@ function stackedLetters(text) {
 
 function categoryLabel(key) {
   const map = {
-    design: "design",
-    photography: "photo",
-    content: "content",
-    reflection: "notes",
-    product: "product",
-    painting: "paint"
+    product: "Product",
+    design: "Design",
+    visual: "Visual",
+    notes: "Notes",
+    lab: "Lab"
   };
   return map[key] || key;
 }
@@ -266,11 +394,31 @@ function initHomeProjectsEmbed() {
   const filterWrap = qs("#homeFilters");
   const listWrap = qs("#homeWorkList");
   if (!filterWrap || !listWrap) return;
+  const split = listWrap.closest(".projectsSplit");
 
   const projects = (window.PROJECTS || []).slice();
   const categories = buildCategories(projects);
-  let active = "all";
+  let active = categories[0]?.key || "";
   let lockedKey = null;
+  let activeRow = 1;
+
+  const setListVisible = (on) => {
+    if (!split) return;
+    if (window.matchMedia("(max-width: 980px)").matches) {
+      split.classList.add("isListOn");
+      return;
+    }
+    split.classList.toggle("isListOn", !!on);
+  };
+
+  const setListRow = (key) => {
+    // 桌面端：让右侧项目列表与当前类别所在行对齐
+    if (window.matchMedia("(max-width: 980px)").matches) return;
+    const idx = categories.findIndex((c) => String(c.key) === String(key));
+    const rowStart = Math.max(1, idx + 1);
+    activeRow = rowStart;
+    listWrap.style.gridRowStart = String(activeRow);
+  };
 
   const updateButtons = () => {
     qsa(".catBtn", filterWrap).forEach((b) => {
@@ -300,6 +448,8 @@ function initHomeProjectsEmbed() {
         if (lockedKey) return;
         active = key;
         updateButtons();
+        setListRow(active);
+        setListVisible(true);
         renderList();
       });
 
@@ -308,6 +458,8 @@ function initHomeProjectsEmbed() {
         if (lockedKey) return;
         active = key;
         updateButtons();
+        setListRow(active);
+        setListVisible(true);
         renderList();
       });
 
@@ -321,6 +473,8 @@ function initHomeProjectsEmbed() {
           active = key;
         }
         updateButtons();
+        setListRow(active);
+        setListVisible(true);
         renderList();
       });
     });
@@ -328,8 +482,11 @@ function initHomeProjectsEmbed() {
     // 鼠标离开分类区：未锁定则回到 ALL
     filterWrap.addEventListener("mouseleave", () => {
       if (lockedKey) return;
-      active = "all";
+      active = categories[0]?.key || active;
       updateButtons();
+      setListRow(active);
+      // 你的需求：不 hover 的时候右侧列表隐藏
+      setListVisible(false);
       renderList();
     });
   };
@@ -377,6 +534,8 @@ function initHomeProjectsEmbed() {
 
   renderFilters();
   updateButtons();
+  setListRow(active);
+  setListVisible(false);
   renderList();
 }
 
@@ -387,12 +546,31 @@ function initWorkPage() {
   const filterWrap = qs("#filters");
   const listWrap = qs("#workList");
   if (!filterWrap || !listWrap) return;
+  const split = listWrap.closest(".projectsSplit");
 
   const categories = buildCategories(projects);
   const params = new URLSearchParams(window.location.search);
   const preselect = params.get("category");
-  let active = preselect && categories.some((c) => c.key === preselect) ? preselect : "all";
+  let active = preselect && categories.some((c) => c.key === preselect) ? preselect : categories[0]?.key || "";
   let lockedKey = preselect && categories.some((c) => c.key === preselect) ? preselect : null;
+  let activeRow = 1;
+
+  const setListVisible = (on) => {
+    if (!split) return;
+    if (window.matchMedia("(max-width: 980px)").matches) {
+      split.classList.add("isListOn");
+      return;
+    }
+    split.classList.toggle("isListOn", !!on);
+  };
+
+  const setListRow = (key) => {
+    if (window.matchMedia("(max-width: 980px)").matches) return;
+    const idx = categories.findIndex((c) => String(c.key) === String(key));
+    const rowStart = Math.max(1, idx + 1);
+    activeRow = rowStart;
+    listWrap.style.gridRowStart = String(activeRow);
+  };
 
   const updateButtons = () => {
     qsa(".catBtn", filterWrap).forEach((b) => {
@@ -423,6 +601,8 @@ function initWorkPage() {
         if (lockedKey) return;
         active = key;
         updateButtons();
+        setListRow(active);
+        setListVisible(true);
         renderList();
       });
 
@@ -430,6 +610,8 @@ function initWorkPage() {
         if (lockedKey) return;
         active = key;
         updateButtons();
+        setListRow(active);
+        setListVisible(true);
         renderList();
       });
 
@@ -442,6 +624,8 @@ function initWorkPage() {
           active = key;
         }
         updateButtons();
+        setListRow(active);
+        setListVisible(true);
         renderList();
         // 让磁吸在新按钮上生效
         initMagnetism();
@@ -451,8 +635,10 @@ function initWorkPage() {
 
     filterWrap.addEventListener("mouseleave", () => {
       if (lockedKey) return;
-      active = "all";
+      active = categories[0]?.key || active;
       updateButtons();
+      setListRow(active);
+      setListVisible(false);
       renderList();
     });
   };
@@ -504,6 +690,8 @@ function initWorkPage() {
 
   renderFilters();
   updateButtons();
+  setListRow(active);
+  setListVisible(!!lockedKey); // 有预选分类则默认显示，否则等 hover 再显示
   renderList();
 }
 
@@ -651,6 +839,9 @@ function boot() {
   initCursor();
   initNameCapsuleMotion();
   initNameMarqueeStart();
+  initAboutPhotoBalance();
+  initAvatarTilt();
+  initHomeScrollBridge();
   initMagnetism();
   initPageFade();
   initHomeProjectsEmbed();

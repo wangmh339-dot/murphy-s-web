@@ -24,6 +24,56 @@ body{
   letter-spacing: -0.01em;
   overflow-x:hidden;
 }
+@media (pointer: fine){
+  /* 使用自定义光标时隐藏系统光标 */
+  body{ cursor: none; }
+}
+
+/* Home：从 Hero 滑到 Projects 的“桥接”交互（轻量） */
+body.hasBridge{ --bridge: 0; }
+body.hasBridge .hero{
+  transform: translateY(calc(var(--bridge) * -52px));
+  opacity: calc(1 - (var(--bridge) * 0.38));
+}
+body.hasBridge .hero .nameCapsule{
+  transform: translateZ(0) scale(calc(1 - (var(--bridge) * 0.075)));
+  filter: blur(calc(var(--bridge) * 2.2px));
+  transition: filter .12s ease;
+}
+body.hasBridge #projects{
+  /* 越接近 Projects 越“抬起来” */
+  transform: translateY(calc((1 - var(--bridge)) * 56px));
+}
+body.hasBridge #projects .sectionTitle{
+  opacity: calc(0.35 + (var(--bridge) * 0.65));
+}
+body.hasBridge #projects .hr{
+  transform-origin: center;
+  transform: scaleX(calc(0.7 + (var(--bridge) * 0.3)));
+}
+
+/* 接近 Projects 时增加一点主题粉色“能量感” */
+body.hasBridge #projects{
+  position: relative;
+}
+body.hasBridge #projects::before{
+  content:"";
+  position:absolute;
+  left: 50%;
+  top: 22px;
+  width: min(920px, 92vw);
+  height: 220px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255,73,246,.18), rgba(255,73,246,0) 70%);
+  filter: blur(14px);
+  opacity: calc(var(--bridge) * 0.9);
+  pointer-events:none;
+  z-index: 0;
+}
+body.hasBridge #projects > *{
+  position: relative;
+  z-index: 1;
+}
 
 /* 纯白背景：去掉弥散/噪点效果 */
 body::before{ content:none; }
@@ -118,13 +168,44 @@ body::after{ content:none; }
 .projectsSplit{
   display:grid;
   grid-template-columns: minmax(360px, 1fr) minmax(320px, 520px);
+  /* 让右侧列表能够“和某个类别行对齐” */
+  grid-auto-rows: min-content;
   gap: clamp(18px, 3vw, 36px);
   align-items:start;
 }
 .projectsSplit .workList{ margin-top: 0; }
+.projectsSplit .catWall{ display: contents; }
+.projectsSplit .catBtn{ grid-column: 1; }
+.projectsSplit .workList{
+  grid-column: 2;
+  grid-row-start: 1;
+  padding-top: 10px; /* 让右侧列表更像“跟在大标题后面” */
+  /* 默认隐藏时不占高度，避免 Projects 与 About 之间出现大段空白 */
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(14px);
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease, max-height .28s ease;
+}
+.projectsSplit.isListOn .workList{
+  max-height: 2000px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
 @media (max-width: 980px){
   .projectsSplit{ grid-template-columns: 1fr; }
-  .projectsSplit .workList{ margin-top: 26px; }
+  .projectsSplit .catWall{ display:block; }
+  .projectsSplit .workList{
+    grid-column: 1;
+    grid-row: auto !important;
+    margin-top: 26px;
+    padding-top: 0;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
 }
 
 /* Home Projects: hover 即出现图片预览的“版块卡片” */
@@ -363,6 +444,9 @@ body.isMarqueeOn .nameInner{
   color: var(--muted);
   line-height: 1.6;
   font-size: 16px;
+  font-family: "Space Grotesk", Inter, "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 300;
+  font-style: italic;
 }
 .accent{ color: var(--fg); }
 
@@ -672,27 +756,112 @@ body.isMarqueeOn .nameInner{
   .aboutRow{ grid-template-columns: 1fr; }
 }
 .avatarWrap{
-  border: 1px solid var(--hair);
-  border-radius: var(--radius);
-  background: rgba(19,19,19,.03);
-  overflow:hidden;
-  box-shadow: 0 22px 70px rgba(0,0,0,.28);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
+  box-shadow: none;
+  display:flex;
+  flex-direction:column;
+  perspective: 900px;
+}
+.avatarTilt{
+  display:flex;
+  flex-direction:column;
+  transform: rotateX(0deg) rotateY(0deg);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform .25s ease;
+}
+.avatarWrap.isTilting .avatarTilt{
+  transition: transform .08s linear;
 }
 .avatarImg{
   width: 100%;
-  height: 320px;
-  object-fit: cover;
+  /* 不裁剪：完整显示图片 */
+  object-fit: contain;
   display:block;
-  background: rgba(19,19,19,.03);
+  background: transparent;
+  backface-visibility: hidden;
 }
-.avatarHint{
-  padding: 12px 14px 14px;
-  font-size: 12px;
-  color: var(--dim);
-  border-top: 1px solid var(--hair);
+.avatarWrap .avatarImg + .avatarImg{
+  border-top: 0;
 }
+/* 高度将由 JS 动态匹配右侧文字高度（两张图总高=右侧文字高） */
 .aboutText.card{
-  padding: 16px 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.bioCopy{
+  font-family: "Space Grotesk", Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+.bioEn{
+  font-style: italic;
+}
+.bioZh{
+  font-style: italic;
+}
+.bioQuote{
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+
+/* About：中文段落右对齐（英文仍保持原样） */
+#about .aboutText{
+  text-align: right;
+}
+#about .bioZh{
+  display:block;
+  text-align:right;
+}
+
+/* Home > Information：CONTACT 卡片居中、英文、非斜体 */
+.contactCard{
+  grid-column: 1 / -1;
+  justify-self: center;
+  text-align: center;
+  max-width: 560px;
+  background: transparent;
+}
+.contactCard .bioCopy{
+  font-style: normal;
+}
+
+/* 音波跳跃（Information 上方） */
+.contactWave{
+  width: min(520px, 86vw);
+  height: 44px;
+  margin: 6px auto 18px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap: 6px;
+}
+.waveBar{
+  width: 6px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,73,246,.34);
+  border: 1px solid rgba(255,73,246,.72);
+  box-shadow:
+    0 0 10px rgba(255,73,246,.26),
+    0 0 22px rgba(255,73,246,.14);
+  transform-origin: center bottom;
+  animation: waveJump 1.05s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.06s);
+}
+@keyframes waveJump{
+  0%, 100%{ transform: scaleY(.35); opacity: .65; }
+  35%{ transform: scaleY(1.65); opacity: 1; }
+  60%{ transform: scaleY(.75); opacity: .85; }
+}
+@media (prefers-reduced-motion: reduce){
+  .waveBar{ animation: none; transform: scaleY(.8); opacity: .75; }
 }
 
 /* Project page */
@@ -746,6 +915,25 @@ body.isMarqueeOn .nameInner{
   background: rgba(19,19,19,.03);
   padding: 16px 16px;
 }
+.resumeTopCard{
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+.resumeFull{
+  margin-top: 22px;
+  width: 100%;
+  /* 尽量撑满可视区域：减去上方 header/title/卡片占用 */
+  height: clamp(680px, calc(100vh - 240px), 1400px);
+}
+.resumeFull embed{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #fff;
+}
 .cardTitle{
   margin:0 0 10px;
   font-size: 12px;
@@ -761,18 +949,37 @@ body.isMarqueeOn .nameInner{
 .cursor{
   position:fixed;
   top:0; left:0;
-  width: 12px; height: 12px;
+  width: 14px; height: 14px;
   border-radius: 999px;
-  background: rgba(0,0,0,.85);
-  mix-blend-mode: difference;
+  background: rgba(255,73,246,.14);
+  border: 1px solid rgba(255,73,246,.88);
+  box-shadow:
+    0 0 14px rgba(255,73,246,.28),
+    0 0 28px rgba(255,73,246,.16);
+  mix-blend-mode: normal;
   transform: translate(-50%, -50%);
   pointer-events:none;
   z-index: 50;
   opacity:0;
+  transition: width .18s ease, height .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.cursor::after{
+  content:"";
+  position:absolute;
+  inset: -18px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255,73,246,.26), rgba(255,73,246,0) 62%);
+  filter: blur(6px);
+  opacity: .65;
+  pointer-events:none;
 }
 .cursor.isHover{
-  width: 46px; height: 46px;
-  background: rgba(0,0,0,.85);
+  width: 34px; height: 34px;
+  background: rgba(255,73,246,.10);
+  border-color: rgba(255,73,246,.72);
+  box-shadow:
+    0 0 18px rgba(255,73,246,.30),
+    0 0 44px rgba(255,73,246,.18);
 }
 .pageFade{
   position:fixed;

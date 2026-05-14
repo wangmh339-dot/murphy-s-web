@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Murphy 梦晖 — Portfolio</title>
-    <meta name="description" content="Murphy 梦晖 — 个人作品集（设计 / 摄影 / 内容运营 / 产品原型 / 实习思考 / 绘画）" />
+    <title>Murphy Ong 王梦晖 — Portfolio</title>
+    <meta name="description" content="Murphy Ong 王梦晖 — 个人作品集（Product / Design / Visual / Notes / Lab）" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./fonts.css" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
+    <link rel="stylesheet" href="./styles.css?v=20260514_4" />
   </head>
   <body data-page="home">
     <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -26,8 +26,8 @@
       <header class="top">
         <div class="brand">
           <a class="brandLink magnetic" href="./index.html" data-cursor="hover">
-            <span class="brandEn">Murphy</span>
-            <span class="brandZh">梦晖</span>
+            <span class="brandEn">Murphy Ong</span>
+            <span class="brandZh">王梦晖</span>
           </a>
         </div>
         <nav class="topNav" aria-label="Primary">
@@ -78,16 +78,12 @@
           <div class="heroNameZh">梦晖</div>
 
           <p class="heroSub">
-            Designer / Photographer / Content Strategist / Product Thinker
+            Content ecosystem explorer / Creator / UX observer
             <br />
-            我专注于<span class="accent">高级感</span>与<span class="accent">创意交互</span>的叙事呈现，作品涵盖设计、摄影、内容运营、产品原型与绘画。
+            内容生态探索者 / 创作者 / 用户体验观察者
           </p>
 
-          <div class="homeLinks">
-            <a class="navItem magnetic" href="#projects" data-cursor="hover">Projects</a>
-            <a class="navItem magnetic" href="./info.html" data-cursor="hover">Information</a>
-            <a class="navItem magnetic" href="mailto:your@email.com" data-cursor="hover">Email</a>
-          </div>
+          <!-- homeLinks removed per request -->
         </section>
 
         <!-- 2) Projects（直接嵌入 feed 流：分类大字 + 列表 + hover 预览） -->
@@ -113,16 +109,46 @@
 
           <div class="aboutRow">
             <div class="avatarWrap">
-              <img class="avatarImg" src="./assets/profile-placeholder.svg" alt="Murphy 梦晖 个人照片" />
-              <div class="avatarHint">把你的照片替换为：assets/profile.jpg（或直接改这里的 src）</div>
+              <div class="avatarTilt" aria-hidden="true">
+                <img class="avatarImg" src="./assets/profile.jpg" alt="王梦晖 个人照片" />
+                <img class="avatarImg avatarImg2" src="./assets/profile-2.jpg" alt="王梦晖 个人照片 2" />
+              </div>
             </div>
 
             <div class="aboutText card">
               <div class="cardTitle">BIO</div>
-              <p>
-                你好，我是 Murphy（梦晖）。我关注高级感与创意交互的表达，擅长将设计、摄影与内容策略整合为清晰的作品叙事。
+              <p class="bioCopy">
+                <span class="bioEn">
+                  Hello, I’m Menghui (Murphy Ong). I like observing the world while on the road.
+                  Travel, music, guitar, hiking, sports, and the subtle emotional connections between people and cities
+                  continually spark new feelings and thoughts.
+                  <br /><br />
+                  Rather than standard answers, I prefer exploring the unknown.
+                  Whether it’s content, products, AI, visual expression, or authentic human interactions,
+                  I’m always curious about “why it is the way it is”, and I actively learn new knowledge and methods.
+                  <br /><br />
+                  I’m currently moving from a design & content background toward product thinking.
+                  Past experiences made me realize that, beyond creating visuals, I care more about:
+                  <br />
+                  <span class="bioQuote">How people express, connect, and find a sense of reality in the digital world.</span>
+                  <br /><br />
+                  This website is my long-term journal—about travel, content, products, creation,
+                  and my ongoing observation of the world.
+                </span>
                 <br /><br />
-                你可以把这段替换成：你的方向（例如视觉/交互/产品/内容）、你擅长的技能、你正在寻找的机会，以及一句你想表达的个人态度。
+                <span class="bioZh">
+                  Hello，我是梦晖，我喜欢在路上观察世界。旅行、音乐、吉他、徒步、运动、人与城市之间细微的情绪连接，
+                  都会让我持续产生新的感受与思考。
+                  <br /><br />
+                  相比标准答案，我更喜欢探索未知的东西。无论是内容、产品、AI、视觉表达，还是人与人之间真实的互动关系，
+                  我总会对“为什么会这样”产生兴趣，并主动学习新的知识与方法。
+                  <br /><br />
+                  我目前正在从设计与内容背景，逐渐走向产品思维。过去的经历让我开始意识到，比起单纯创造视觉，我更在意的是：
+                  <br />
+                  <span class="bioQuote">人如何表达、连接，以及如何在数字世界中获得真实感。</span>
+                  <br /><br />
+                  这个网站更像是我的长期记录。关于旅行、内容、产品、创作，以及我对这个世界持续进行的观察。
+                </span>
               </p>
             </div>
           </div>
@@ -136,17 +162,17 @@
           </div>
           <div class="hr"></div>
           <div class="gallery" aria-label="Selected gallery">
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=photography">
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=visual">
               <div class="tileBg g1"></div>
               <div class="tileMeta">
-                <div class="tileTitle">Photography</div>
-                <div class="tileSub">城市 / 情绪 / 叙事</div>
+                <div class="tileTitle">Visual</div>
+                <div class="tileSub">影像 / 视觉 / 叙事</div>
               </div>
             </a>
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=painting">
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=visual">
               <div class="tileBg g2"></div>
               <div class="tileMeta">
-                <div class="tileTitle">Painting</div>
+                <div class="tileTitle">Visual</div>
                 <div class="tileSub">练习 / 色彩 / 形体</div>
               </div>
             </a>
@@ -157,11 +183,11 @@
                 <div class="tileSub">视觉系统 / 交互 / 品牌</div>
               </div>
             </a>
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=content">
+            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=lab">
               <div class="tileBg g4"></div>
               <div class="tileMeta">
-                <div class="tileTitle">Content Ops</div>
-                <div class="tileSub">策略 / 增长 / 复盘</div>
+                <div class="tileTitle">Lab</div>
+                <div class="tileSub">实验 / 策略 / 增长</div>
               </div>
             </a>
           </div>
@@ -171,22 +197,42 @@
         <section class="feedSection" data-animate="fade">
           <div class="sectionTitle">
             <span>Information</span>
-            <span class="sectionHint">（简介与联系）</span>
           </div>
           <div class="hr"></div>
+          <!-- 音波跳跃：主题粉色 -->
+          <div class="contactWave" aria-hidden="true">
+            <span class="waveBar" style="--i:0"></span>
+            <span class="waveBar" style="--i:1"></span>
+            <span class="waveBar" style="--i:2"></span>
+            <span class="waveBar" style="--i:3"></span>
+            <span class="waveBar" style="--i:4"></span>
+            <span class="waveBar" style="--i:5"></span>
+            <span class="waveBar" style="--i:6"></span>
+            <span class="waveBar" style="--i:7"></span>
+            <span class="waveBar" style="--i:8"></span>
+            <span class="waveBar" style="--i:9"></span>
+            <span class="waveBar" style="--i:10"></span>
+            <span class="waveBar" style="--i:11"></span>
+            <span class="waveBar" style="--i:12"></span>
+            <span class="waveBar" style="--i:13"></span>
+            <span class="waveBar" style="--i:14"></span>
+            <span class="waveBar" style="--i:15"></span>
+            <span class="waveBar" style="--i:16"></span>
+            <span class="waveBar" style="--i:17"></span>
+            <span class="waveBar" style="--i:18"></span>
+            <span class="waveBar" style="--i:19"></span>
+            <span class="waveBar" style="--i:20"></span>
+            <span class="waveBar" style="--i:21"></span>
+            <span class="waveBar" style="--i:22"></span>
+            <span class="waveBar" style="--i:23"></span>
+          </div>
           <div class="infoGrid">
-            <div class="card">
-              <div class="cardTitle">ABOUT</div>
-              <p>
-                你好，我是 Murphy（梦晖）。我喜欢把克制的排版、创意视觉与动态交互结合在一起，让作品“讲清楚也好看”。
-              </p>
-            </div>
-            <div class="card">
+            <div class="card contactCard">
               <div class="cardTitle">CONTACT</div>
-              <p>
-                <a class="magnetic" data-cursor="hover" href="mailto:your@email.com">your@email.com</a>
+              <p class="bioCopy">
+                <span>Email: <a class="magnetic" data-cursor="hover" href="mailto:985834148@qq.com">985834148@qq.com</a></span>
                 <br /><br />
-                <span style="color: var(--dim)">（可选）把 Instagram / 小红书 / Behance 链接替换到这里。</span>
+                <span>WeChat: <span style="color: var(--fg)">jchzmh</span></span>
               </p>
             </div>
           </div>
@@ -194,11 +240,11 @@
       </div>
 
       <footer class="footer">
-        <span>© <span id="year"></span> Murphy 梦晖</span>
+        <span>© <span id="year"></span> Murphy Ong 王梦晖</span>
       </footer>
     </main>
 
-    <script src="./projects.js"></script>
-    <script src="./main.js"></script>
+    <script src="./projects.js?v=20260514_4"></script>
+    <script src="./main.js?v=20260514_4"></script>
   </body>
 </html>
