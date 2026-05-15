@@ -7,7 +7,8 @@
     <meta name="description" content="Murphy Ong 王梦晖 — Project detail" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
-    <link rel="stylesheet" href="./styles.css?v=20260514_4" />
+    <link rel="stylesheet" href="./styles.css?v=20260516_3" />
+    <link rel="stylesheet" href="./project-styles.css?v=20260516_5" />
   </head>
   <body data-page="project">
     <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -31,24 +32,76 @@
 
       <div class="projectHeader">
         <a class="navItem magnetic" href="./work.html" data-cursor="hover">← Back to Work</a>
-        <h1 class="projectName" id="projectName">Project</h1>
+        <div class="projectTitleWrap" id="projectTitleWrap">
+          <h1 class="projectName" id="projectName">Project</h1>
+          <p class="projectNameEn" id="projectNameEn"></p>
+        </div>
         <p class="projectDeck" id="projectDeck"></p>
+        <div class="projectMetaInline" id="projectMetaInline"></div>
       </div>
 
       <div class="projectCover" id="projectCover" role="img" aria-label="Project cover"></div>
 
-      <section class="projectGrid" aria-label="Project content">
-        <div class="card">
-          <div class="cardTitle">DETAILS</div>
-          <p id="projectDetails"></p>
+      <section class="projectContent" aria-label="Project content">
+        <div class="projectMain">
+
+          <!-- 核心数据 -->
+          <section class="projSection" data-section="stats">
+            <div class="sectionHead">
+              <span class="sectionNum">01</span>
+              <h2 class="sectionLabel">核心数据</h2>
+            </div>
+            <div class="statsRow" id="statsRow"></div>
+          </section>
+
+          <!-- 内容策略 -->
+          <section class="projSection" data-section="strategy">
+            <div class="sectionHead">
+              <span class="sectionNum">02</span>
+              <h2 class="sectionLabel">内容策略</h2>
+            </div>
+            <div class="strategyRow" id="strategyRow"></div>
+          </section>
+
+          <!-- 爆款案例 -->
+          <section class="projSection" data-section="cases">
+            <div class="sectionHead">
+              <span class="sectionNum">03</span>
+              <h2 class="sectionLabel">爆款案例拆解</h2>
+            </div>
+            <div class="casesList" id="casesList"></div>
+          </section>
+
+          <!-- 运营方法论 -->
+          <section class="projSection" data-section="insights">
+            <div class="sectionHead">
+              <span class="sectionNum">04</span>
+              <h2 class="sectionLabel">运营方法论</h2>
+            </div>
+            <div class="insightsGrid" id="insightsGrid"></div>
+          </section>
+
+          <!-- 商业转化 -->
+          <section class="projSection" data-section="conversion">
+            <div class="sectionHead">
+              <span class="sectionNum">05</span>
+              <h2 class="sectionLabel">商业转化</h2>
+            </div>
+            <div class="conversionWrap" id="conversionWrap"></div>
+          </section>
+
+          <!-- 项目反思 -->
+          <section class="projSection" data-section="reflect">
+            <div class="sectionHead">
+              <span class="sectionNum">06</span>
+              <h2 class="sectionLabel">项目反思</h2>
+            </div>
+            <div class="reflectRow" id="reflectRow"></div>
+          </section>
+
         </div>
 
-        <div class="card">
-          <div class="cardTitle">META</div>
-          <div class="projectGrid" id="projectMeta" style="margin-top: 0; grid-template-columns: 1fr; gap: 12px"></div>
-          <div style="height: 14px"></div>
-          <div id="projectLink"></div>
-        </div>
+
       </section>
 
       <footer class="footer">
@@ -56,7 +109,7 @@
       </footer>
     </main>
 
-    <script src="./projects.js?v=20260514_4"></script>
-    <script src="./main.js?v=20260514_4"></script>
+    <script src="./projects.js?v=20260516_5"></script>
+    <script src="./main.js?v=20260516_5"></script>
   </body>
 </html>

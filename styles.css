@@ -6,10 +6,10 @@
   --muted: rgba(19,19,19,.72);
   --dim: rgba(19,19,19,.46);
   --hair: rgba(19,19,19,.12);
-  --accent: #ff49f6;
+  --accent: #e851ec;
   --shadow: rgba(0,0,0,.18);
   --radius: 18px;
-  --max: 1040px;
+  --max: 1200px;
   --pad: 28px;
   --display: "Bebas Neue";
 }
@@ -888,7 +888,8 @@ body.isMarqueeOn .nameInner{
   border-radius: var(--radius);
   border: 1px solid var(--hair);
   background: linear-gradient(135deg, rgba(255,73,246,.14), rgba(40,120,255,.10));
-  height: min(48vh, 380px);
+  height: auto;
+  max-height: 520px;
   box-shadow: 0 30px 80px var(--shadow);
   position:relative;
   overflow:hidden;
@@ -1004,10 +1005,253 @@ body.isMarqueeOn .nameInner{
 /* Scroll-triggered reveals */
 [data-animate="fade"]{
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(30px) scale(0.96);
 }
 [data-animate].isIn{
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity .55s ease, transform .55s ease;
+  transform: translateY(0) scale(1);
+  transition: opacity .75s cubic-bezier(.2,.9,.2,1), transform .75s cubic-bezier(.2,.9,.2,1);
+}
+
+/* 滚动视差效果 - Projects 到 About 之间 */
+.feedSection{
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+/* Projects 板块视差 */
+.embeddedProjects{
+  transform: translateZ(0);
+  transition: transform .1s linear;
+}
+
+/* About 板块视差 - 稍微慢一点 */
+#about{
+  transform: translateZ(0);
+  transition: transform .1s linear;
+}
+
+/* 3D 卡片翻转效果 */
+.workItem{
+  transform-style: preserve-3d;
+  transition: transform .4s cubic-bezier(.2,.9,.2,1), background .3s ease;
+}
+
+.workItem:hover{
+  transform: translateX(8px) translateZ(20px);
+  background: rgba(255,73,246,.03);
+}
+
+.workItem::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform .35s cubic-bezier(.2,.9,.2,1);
+}
+
+.workItem:hover::before{
+  transform: scaleY(1);
+}
+
+/* 分类按钮 3D 效果 */
+.catBtn{
+  transform-style: preserve-3d;
+  transition: transform .35s cubic-bezier(.2,.9,.2,1);
+}
+
+.catBtn:hover{
+  transform: translateX(12px) scale(1.12) translateZ(30px);
+}
+
+.catBtn[aria-pressed="true"]{
+  transform: translateX(20px) scale(1.15) translateZ(40px);
+}
+
+/* 文字逐字动画 */
+.sectionTitle span:first-child{
+  display: inline-block;
+  overflow: hidden;
+}
+
+.sectionTitle span:first-child .char{
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%) rotateX(-90deg);
+  animation: charReveal .6s cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes charReveal{
+  to{
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+/* Gallery 瓷砖悬停 3D 效果 */
+.tile{
+  transform-style: preserve-3d;
+  transition: transform .5s cubic-bezier(.2,.9,.2,1), box-shadow .5s ease;
+}
+
+.tile:hover{
+  transform: translateY(-8px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+  box-shadow: 
+    0 30px 60px rgba(0,0,0,.2),
+    0 0 40px rgba(255,73,246,.15);
+}
+
+.tileBg{
+  transition: transform .8s cubic-bezier(.2,.9,.2,1), filter .5s ease;
+}
+
+.tile:hover .tileBg{
+  transform: scale(1.15) translateZ(20px);
+  filter: saturate(1.3);
+}
+
+/* 图片缩放与模糊过渡 */
+.avatarTilt{
+  transition: transform .4s cubic-bezier(.2,.9,.2,1), filter .4s ease;
+}
+
+.avatarTilt:hover{
+  filter: brightness(1.05) contrast(1.02);
+}
+
+/* 光晕脉冲效果 */
+@keyframes glowPulse{
+  0%, 100%{
+    box-shadow: 
+      0 0 20px rgba(255,73,246,.3),
+      0 0 40px rgba(255,73,246,.2),
+      0 0 60px rgba(255,73,246,.1);
+  }
+  50%{
+    box-shadow: 
+      0 0 30px rgba(255,73,246,.5),
+      0 0 60px rgba(255,73,246,.3),
+      0 0 90px rgba(255,73,246,.2);
+  }
+}
+
+/* 项目列表容器光晕 */
+.projectsSplit.isListOn .workList{
+  animation: glowPulse 3s ease-in-out infinite;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* 分割线动画 */
+.hr{
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform .8s cubic-bezier(.2,.9,.2,1);
+}
+
+.feedSection.isIn .hr{
+  transform: scaleX(1);
+}
+
+/* 增强的磁性吸附 */
+.magnetic{
+  transition: transform .15s cubic-bezier(.2,.9,.2,1);
+}
+
+/* 滚动进度指示器 */
+.scrollProgress{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), rgba(255,73,246,.5));
+  z-index: 100;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform .1s linear;
+}
+
+/* 视差背景层 */
+.parallaxBg{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+
+body.hasParallax .parallaxBg{
+  opacity: 1;
+}
+
+/* 文字高亮动画 */
+.bioQuote{
+  position: relative;
+  display: inline;
+}
+
+.bioQuote::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 30%;
+  background: rgba(255,73,246,.15);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .6s cubic-bezier(.2,.9,.2,1);
+  z-index: -1;
+}
+
+.feedSection.isIn .bioQuote::after{
+  transform: scaleX(1);
+}
+
+/* 项目卡片悬停图片预览增强 */
+.hoverPreview{
+  transform-style: preserve-3d;
+  transition: 
+    opacity .25s ease, 
+    transform .25s cubic-bezier(.2,.9,.2,1),
+    box-shadow .25s ease;
+}
+
+.hoverPreview.isOn{
+  box-shadow: 
+    0 25px 80px rgba(0,0,0,.25),
+    0 0 50px rgba(255,73,246,.2);
+}
+
+/* 滚动触发的 3D 倾斜效果 */
+.tiltOnScroll{
+  transform-style: preserve-3d;
+  transition: transform .3s cubic-bezier(.2,.9,.2,1);
+}
+
+/* 脉冲光点装饰 */
+.pulseDot{
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse{
+  0%, 100%{
+    transform: scale(1);
+    opacity: .6;
+  }
+  50%{
+    transform: scale(1.5);
+    opacity: 1;
+  }
 }

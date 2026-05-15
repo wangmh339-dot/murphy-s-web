@@ -332,6 +332,10 @@ function initScrollReveals() {
         if (!e.isIntersecting) return;
         const el = e.target;
         el.classList.add("isIn");
+        
+        // 触发文字逐字动画
+        initCharAnimation(el);
+        
         if (page === "home" && el.dataset.animate === "hero") {
           if (typeof playHero === "function") playHero();
         }
@@ -342,6 +346,157 @@ function initScrollReveals() {
   );
 
   els.forEach((el) => io.observe(el));
+}
+
+// 文字逐字动画
+function initCharAnimation(section) {
+  const title = qs(".sectionTitle span:first-child", section);
+  if (!title || title.dataset.animated) return;
+  
+  const text = title.textContent;
+  title.dataset.animated = "1";
+  title.innerHTML = text.split("").map((char, i) => 
+    `<span class="char" style="animation-delay: ${i * 0.05}s">${char === " " ? "&nbsp;" : char}</span>`
+  ).join("");
+}
+
+// 滚动进度条
+function initScrollProgress() {
+  const progress = document.createElement("div");
+  progress.className = "scrollProgress";
+  progress.id = "scrollProgress";
+  document.body.appendChild(progress);
+  
+  let raf = null;
+  const update = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min(scrollTop / docHeight, 1);
+    document.documentElement.style.setProperty("--scroll-progress", progress);
+    const bar = qs("#scrollProgress");
+    if (bar) bar.style.transform = `scaleX(${progress})`;
+    raf = null;
+  };
+  
+  window.addEventListener("scroll", () => {
+    if (!raf) raf = requestAnimationFrame(update);
+  }, { passive: true });
+  
+  update();
+}
+
+// 视差滚动效果 - Projects 到 About 之间
+function initParallaxScroll() {
+  const page = document.body.dataset.page;
+  if (page !== "home") return;
+  if (prefersReducedMotion()) return;
+  
+  const projects = qs("#projects");
+  const about = qs("#about");
+  if (!projects || !about) return;
+  
+  let raf = null;
+  let lastScrollY = 0;
+  
+  const update = () => {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    
+    // Projects 视差 - 移动速度较慢
+    const projectsRect = projects.getBoundingClientRect();
+    if (projectsRect.top < vh && projectsRect.bottom > 0) {
+      const projectsOffset = (scrollY * 0.05);
+      projects.style.transform = `translateY(${projectsOffset}px)`;
+    }
+    
+    // About 视差 - 移动速度更慢，创造层次感
+    const aboutRect = about.getBoundingClientRect();
+    if (aboutRect.top < vh && aboutRect.bottom > 0) {
+      const aboutOffset = (scrollY * 0.03);
+      about.style.transform = `translateY(${aboutOffset}px)`;
+    }
+    
+    lastScrollY = scrollY;
+    raf = null;
+  };
+  
+  window.addEventListener("scroll", () => {
+    if (!raf) raf = requestAnimationFrame(update);
+  }, { passive: true });
+  
+  update();
+}
+
+// 3D 倾斜跟随鼠标效果
+function init3DTilt() {
+  if (window.matchMedia("(pointer: coarse)").matches) return;
+  if (prefersReducedMotion()) return;
+  
+  const tiles = qsa(".tile");
+  tiles.forEach((tile) => {
+    const onMove = (e) => {
+      const r = tile.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      
+      tile.style.transform = `
+        translateY(-8px) 
+        rotateX(${-y * 15}deg) 
+        rotateY(${x * 15}deg) 
+        scale(1.02)
+      `;
+    };
+    
+    const onLeave = () => {
+      tile.style.transform = "";
+    };
+    
+    tile.addEventListener("mousemove", onMove);
+    tile.addEventListener("mouseleave", onLeave);
+  });
+}
+
+// 增强的磁性吸附效果
+function initEnhancedMagnetism() {
+  if (window.matchMedia("(pointer: coarse)").matches) return;
+  if (prefersReducedMotion()) return;
+  
+  qsa(".magnetic").forEach((el) => {
+    const strength = 28; // 增强吸附力度
+    const rotateStrength = 8; // 旋转强度
+    
+    const onMove = (e) => {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const mx = e.clientX - cx;
+      const my = e.clientY - cy;
+      
+      const distance = Math.sqrt(mx * mx + my * my);
+      const maxDistance = Math.max(r.width, r.height);
+      
+      if (distance < maxDistance * 1.5) {
+        const factor = 1 - (distance / (maxDistance * 1.5));
+        const tx = (mx / r.width) * strength * factor;
+        const ty = (my / r.height) * strength * factor;
+        const rx = (-my / r.height) * rotateStrength * factor;
+        const ry = (mx / r.width) * rotateStrength * factor;
+        
+        el.style.transform = `
+          translate(${tx}px, ${ty}px) 
+          rotateX(${rx}deg) 
+          rotateY(${ry}deg)
+        `;
+      }
+    };
+    
+    const onLeave = () => {
+      el.style.transform = "";
+    };
+    
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
+  });
 }
 
 function buildCategories(projects) {
@@ -763,47 +918,216 @@ function initProjectPage() {
   const p = projects.find((x) => x.id === id) || projects[0];
 
   const title = qs("#projectName");
+  const titleEn = qs("#projectNameEn");
   const deck = qs("#projectDeck");
-  const meta = qs("#projectMeta");
-  const details = qs("#projectDetails");
   const link = qs("#projectLink");
   const cover = qs("#projectCover");
 
   if (title) title.textContent = p?.title || "Project";
+  if (titleEn) titleEn.textContent = p?.titleEn || "";
   if (deck) deck.textContent = p?.deck || "";
   if (cover) {
     const bg = p?.cover || p?.preview || "";
     if (bg) {
       cover.style.backgroundImage = `url("${bg}")`;
-      cover.style.backgroundSize = "cover";
+      cover.style.backgroundSize = "contain";
       cover.style.backgroundPosition = "center";
+      cover.style.backgroundRepeat = "no-repeat";
     }
   }
-  if (meta) {
-    const pills = [
-      p?.year ? { k: "Year", v: p.year } : null,
-      p?.category ? { k: "Category", v: p.category } : null,
-      Array.isArray(p?.tags) && p.tags.length ? { k: "Tags", v: p.tags.join(" / ") } : null
-    ].filter(Boolean);
-    meta.innerHTML = pills
-      .map(
-        (i) => `
-          <div class="card">
-            <div class="cardTitle">${escapeHtml(i.k)}</div>
-            <p>${escapeHtml(i.v)}</p>
-          </div>
-        `
-      )
-      .join("");
+
+  // 内联 META（标题下方）
+  const metaInline = qs("#projectMetaInline");
+  if (metaInline) {
+    const parts = [];
+    if (p?.year) parts.push(`<div class="metaInlineItem">${escapeHtml(p.year)}</div>`);
+    if (p?.category) parts.push(`<div class="metaInlineItem">${escapeHtml(p.category)}</div>`);
+    if (Array.isArray(p?.tags) && p.tags.length) {
+      parts.push(`<div class="metaInlineTags"><span>${escapeHtml(p.tags.join(" · "))}</span></div>`);
+    }
+    metaInline.innerHTML = parts.join("");
   }
-  if (details) details.textContent = p?.details || "";
+
+  // 外链
   if (link) {
     if (p?.link) {
       link.innerHTML = `<a class="magnetic" data-cursor="hover" href="${escapeAttr(p.link)}" target="_blank" rel="noreferrer">外链 / 项目地址 ↗</a>`;
     } else {
-      link.innerHTML = `<span style="color: var(--dim)">（可选）在 projects.js 里填入 link 字段以显示外链</span>`;
+      link.innerHTML = ``;
     }
   }
+
+  // 01 核心数据
+  const statsRow = qs("#statsRow");
+  if (statsRow && Array.isArray(p?.stats) && p.stats.length) {
+    statsRow.innerHTML = p.stats.map((s, i) => `
+      <div class="statCard${i === 0 ? ' statCard--primary' : ''}">
+        <div class="statValue">${escapeHtml(s.value)}</div>
+        <div class="statDesc">${escapeHtml(s.label)}</div>
+      </div>
+    `).join("");
+  }
+
+  // 02 内容策略
+  const strategyRow = qs("#strategyRow");
+  if (strategyRow && Array.isArray(p?.strategies) && p.strategies.length) {
+    strategyRow.innerHTML = p.strategies.map(s => `
+      <div class="strategyCard">
+        <img class="strategyImg" src="${escapeAttr(s.image)}" alt="${escapeAttr(s.name)}" loading="lazy" />
+        <div class="strategyBody">
+          <h3 class="strategyName">${escapeHtml(s.name)}</h3>
+          <p class="strategyDesc">${escapeHtml(s.desc)}</p>
+          <div class="strategyTags">
+            ${(s.tags || []).map((t, ti) => `
+              <span class="strategyTag${ti === 0 ? ' strategyTag--accent' : ''}">${escapeHtml(t)}</span>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // 03 爆款案例
+  const casesList = qs("#casesList");
+  if (casesList && Array.isArray(p?.cases) && p.cases.length) {
+    casesList.innerHTML = p.cases.map(c => {
+      const m = c.metrics || {};
+      const metricParts = [];
+      if (m.likes) metricParts.push(`<span class="caseMetric"><strong>${escapeHtml(m.likes)}</strong> 赞</span>`);
+      if (m.saves) metricParts.push(`<span class="caseMetric"><strong>${escapeHtml(m.saves)}</strong> 收藏</span>`);
+      if (m.comments) metricParts.push(`<span class="caseMetric"><strong>${escapeHtml(m.comments)}</strong> 评论</span>`);
+      if (m.views) metricParts.push(`<span class="caseMetric"><strong>${escapeHtml(m.views)}</strong> 浏览</span>`);
+      if (m.shares) metricParts.push(`<span class="caseMetric"><strong>${escapeHtml(m.shares)}</strong> 转发</span>`);
+
+      return `
+        <div class="caseItem">
+          <img class="caseImg" src="${escapeAttr(c.image)}" alt="${escapeAttr(c.title)}" loading="lazy" />
+          <div class="caseBody">
+            <div class="caseHead">
+              <span class="caseType">${escapeHtml(c.type)}</span>
+              <h3 class="caseTitle">${escapeHtml(c.title)}</h3>
+            </div>
+            <div class="caseMetrics">${metricParts.join("")}</div>
+            <p class="caseLogic"><strong>爆款逻辑：</strong>${escapeHtml(c.logic)}</p>
+            <p class="caseHighlight">${escapeHtml(c.highlight)}</p>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // 04 运营方法论
+  const insightsGrid = qs("#insightsGrid");
+  if (insightsGrid && Array.isArray(p?.insights) && p.insights.length) {
+    insightsGrid.innerHTML = p.insights.map(ins => `
+      <div class="insightCard">
+        <div class="insightNum">${escapeHtml(ins.num)}</div>
+        <h4 class="insightTitle">${escapeHtml(ins.title)}</h4>
+        <p class="insightText">${escapeHtml(ins.text)}</p>
+      </div>
+    `).join("");
+  }
+
+  // 05 项目反思
+  const reflectRow = qs("#reflectRow");
+  if (reflectRow && p?.reflection) {
+    const r = p.reflection;
+    const renderList = (items) => `<ul class="reflectList">${items.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`;
+
+    reflectRow.innerHTML = `
+      <div class="reflectCol reflectCol--good">
+        <h4 class="reflectColTitle reflectColTitle--good">做得好的</h4>
+        ${renderList(r.good || [])}
+      </div>
+      <div class="reflectCol reflectCol--improve">
+        <h4 class="reflectColTitle reflectColTitle--improve">可以改进的</h4>
+        ${renderList(r.improve || [])}
+      </div>
+      <div class="reflectCol reflectCol--next">
+        <h4 class="reflectColTitle reflectColTitle--next">下一步</h4>
+        ${renderList(r.next || [])}
+      </div>
+    `;
+  }
+
+  // 06 商业转化
+  const conversionWrap = qs("#conversionWrap");
+  if (conversionWrap && p?.conversion) {
+    const cv = p.conversion;
+    const steps = cv.steps || [];
+    const images = cv.images || [];
+
+    conversionWrap.innerHTML = `
+      ${steps.length ? `
+        <div class="conversionFlow">
+          ${steps.map((s, i) => `
+            <div class="conversionStep">
+              <div class="conversionStepIcon">${escapeHtml(s.icon || (i + 1))}</div>
+              <div class="conversionStepNum">STEP ${String(i + 1).padStart(2, '0')}</div>
+              <h4 class="conversionStepTitle">${escapeHtml(s.title)}</h4>
+              <p class="conversionStepDesc">${escapeHtml(s.desc)}</p>
+            </div>
+          `).join("")}
+        </div>
+      ` : ""}
+      ${images.length ? `
+        <div class="conversionGallery">
+          ${images.map(img => `<img src="${escapeAttr(img)}" alt="商业转化" loading="lazy" />`).join("")}
+        </div>
+      ` : ""}
+      ${cv.note ? `<div class="conversionNote">${cv.note}</div>` : ""}
+    `;
+  }
+
+  // 滚动触发动画
+  initProjectScrollAnimations();
+
+  // 初始化交互
+  initMagnetism();
+  if (window.__bindCursorHover) window.__bindCursorHover();
+}
+
+function initProjectScrollAnimations() {
+  if (prefersReducedMotion()) {
+    // 如果用户偏好减少动画，直接显示所有元素
+    document.querySelectorAll('.projSection, .statCard, .strategyCard, .caseItem, .insightCard, .reflectCol, .conversionStep, .conversionGallery img, .conversionNote').forEach(el => {
+      el.classList.add('is-visible');
+    });
+    return;
+  }
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, observerOptions);
+
+  // 观察所有需要动画的元素
+  const selectors = [
+    '.projSection',
+    '.statCard',
+    '.strategyCard',
+    '.caseItem',
+    '.insightCard',
+    '.reflectCol',
+    '.conversionStep',
+    '.conversionGallery img',
+    '.conversionNote'
+  ];
+
+  selectors.forEach(selector => {
+    document.querySelectorAll(selector).forEach(el => {
+      observer.observe(el);
+    });
+  });
 }
 
 function initBackgroundVariant() {
@@ -848,6 +1172,11 @@ function boot() {
   initScrollReveals();
   initWorkPage();
   initProjectPage();
+  // 新的交互效果
+  initScrollProgress();
+  initParallaxScroll();
+  init3DTilt();
+  initEnhancedMagnetism();
 }
 
 document.addEventListener("DOMContentLoaded", boot);
