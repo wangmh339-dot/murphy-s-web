@@ -46,6 +46,7 @@
 .exp-card-desc p {
   font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
   font-size: 13px;
+  font-weight: 200;
   line-height: 1.7;
   color: var(--muted);
   margin: 0;

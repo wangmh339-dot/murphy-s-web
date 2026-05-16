@@ -4,7 +4,7 @@ window.PROJECTS = [
     title: "小红书内容运营 — 亚文化垂类账号案例",
     titleEn: "Xiaohongshu Content Operations — Subculture Vertical Account",
     year: "2024",
-    category: "visual",
+    category: "notes",
     tags: ["内容运营", "小红书", "亚文化", "增长"],
     preview: "./assets/xhs-henna-1-new.jpg",
     cover: "./assets/xhs-henna-1-new.jpg",
@@ -120,25 +120,14 @@ window.PROJECTS = [
     link: "https://www.xiaohongshu.com/user/profile/5f5f5f5f5f5f5f5f5f5f5f5f"
   },
   {
-    id: "visual-system-01",
-    title: "视觉系统 — 品牌与空间",
-    year: "2023",
+    id: "space-design-01",
+    title: "空间设计 — 春熙家树工作室",
+    year: "2024",
     category: "design",
-    tags: ["视觉系统", "品牌", "空间"],
+    tags: ["空间设计", "商业空间", "住宅"],
     preview: "./assets/project-placeholder.svg",
-    deck: "品牌视觉系统与空间体验设计案例。",
-    details: "建议补充：设计目标、系统构成、应用场景与效果。",
-    link: ""
-  },
-  {
-    id: "narrative-01",
-    title: "Narrative — 影像与文字",
-    year: "2022",
-    category: "notes",
-    tags: ["影像", "叙事", "文字"],
-    preview: "./assets/project-placeholder.svg",
-    deck: "城市夜景摄影与短篇文字结合的叙事实验。",
-    details: "建议补充：拍摄主题、器材、后期风格与选择逻辑。",
+    deck: "参与商业空间与住宅项目的全流程设计支持。",
+    details: "建议补充：项目类型、设计流程、软件工具、成果展示。",
     link: ""
   },
   {
@@ -274,17 +263,6 @@ window.PROJECTS = [
       { title: "框架重构", desc: "探索 Astro 框架重构以支持更好的内容管理" }
     ],
     link: "https://wangmh339-dot.github.io/murphy-s-web/"
-  },
-  {
-    id: "intern-reflection-01",
-    title: "Internship Notes — Lessons & Thinking",
-    year: "2024",
-    category: "notes",
-    tags: ["实习思考", "复盘"],
-    preview: "./assets/project-placeholder.svg",
-    deck: "关于协作、节奏、产出标准与沟通方式的阶段性反思。",
-    details: "建议补充：具体场景、做法、影响、下一次会怎么做。",
-    link: ""
   },
   {
     id: "product-proto-01",
