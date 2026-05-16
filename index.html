@@ -8,19 +8,17 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
     <link rel="stylesheet" href="./styles.css?v=20260514_4" />
-  </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="./color-bends.js?v=20260516_1"></script>
+    <link rel="stylesheet" href="./components/circular-gallery.css" />
+    <link rel="stylesheet" href="./components/exp-slider.css" />
+    <script src="./components/circular-gallery.js"></script>
+    <script src="./components/exp-slider.js"></script>
+</head>
   <body data-page="home">
     <div class="cursor" id="cursor" aria-hidden="true"></div>
     <div class="pageFade" id="pageFade" aria-hidden="true"></div>
     <div class="hoverPreview" id="hoverPreview" aria-hidden="true"></div>
-    <!-- SVG filters for subtle pink noisy trail -->
-    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
-      <filter id="pinkNoise" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
-        <feGaussianBlur stdDeviation="0.35" />
-      </filter>
-    </svg>
 
     <main class="shell">
       <header class="top">
@@ -41,6 +39,8 @@
       <div class="feed">
         <!-- 1) 名字动态展示（滚动触发） -->
         <section class="feedSection hero" data-animate="hero">
+          <!-- WebGL Fluid Background -->
+          <div id="heroWebglBg" class="hero-webgl-bg" aria-hidden="true"></div>
           <div class="slogan" aria-label="Slogan">
             <div class="sloganEn">On the road, seeking a truer connection between people and the world.</div>
             <div class="sloganZh">在路上，寻找人与世界更真实的连接。</div>
@@ -154,42 +154,95 @@
           </div>
         </section>
 
-        <!-- 3) 精选图集（摄影/绘画占位，可替换为真实图片） -->
+        <!-- 3) 精选图集 - 3D Circular Gallery -->
         <section class="feedSection" data-animate="fade">
           <div class="sectionTitle">
             <span>Selected</span>
-            <span class="sectionHint">（图集预览）</span>
+            <span class="sectionHint">（无限流图集）</span>
           </div>
           <div class="hr"></div>
-          <div class="gallery" aria-label="Selected gallery">
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=visual">
-              <div class="tileBg g1"></div>
-              <div class="tileMeta">
-                <div class="tileTitle">Visual</div>
-                <div class="tileSub">影像 / 视觉 / 叙事</div>
+          <div id="circularGallery" class="circular-gallery-container" aria-label="Selected gallery"></div>
+          <div class="gallery-hint">← 拖动查看图片 →</div>
+        </section>
+
+
+        <!-- 3.5) Experience / 实习经历 - Horizontal Slider -->
+        <section class="feedSection" data-animate="fade" id="experience">
+          <div class="sectionTitle">
+            <span>Experience</span>
+            <span class="sectionHint">（滑动切换）</span>
+          </div>
+          <div class="hr"></div>
+          <div id="expSlider" class="exp-slider">
+            <div class="exp-slider-track">
+
+              <div class="exp-card">
+                <div class="exp-card-header">
+                  <span class="exp-card-period">2024.06 — 2024.09</span>
+                  <span class="exp-card-tag">实习</span>
+                </div>
+                <div>
+                  <h3 class="exp-card-company">春熙家树空间设计工作室</h3>
+                  <p class="exp-card-role">设计助理</p>
+                </div>
+                <div class="exp-card-desc">
+                  <p>参与商业空间与住宅项目的全流程设计支持，协助完成方案构思、效果图制作及施工图深化。负责客户沟通与需求梳理，将抽象概念转化为可视化设计方案。</p>
+                </div>
+                <div class="exp-card-tags">
+                  <span class="exp-card-tagitem">空间设计</span>
+                  <span class="exp-card-tagitem">方案呈现</span>
+                  <span class="exp-card-tagitem">客户沟通</span>
+                </div>
               </div>
-            </a>
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=visual">
-              <div class="tileBg g2"></div>
-              <div class="tileMeta">
-                <div class="tileTitle">Visual</div>
-                <div class="tileSub">练习 / 色彩 / 形体</div>
+
+              <div class="exp-card">
+                <div class="exp-card-header">
+                  <span class="exp-card-period">2025.09 — 2025.12</span>
+                  <span class="exp-card-tag">实习</span>
+                </div>
+                <div>
+                  <h3 class="exp-card-company">字节跳动</h3>
+                  <p class="exp-card-role">HR 实习生 · TikTok 算法团队</p>
+                </div>
+                <div class="exp-card-desc">
+                  <p>参与 AI 算法团队人才画像构建与招聘流程优化，在岗位推进中深入接触推荐机制、内容分发及 AI 产品逻辑。通过案例学习与业务文档研读，建立对互联网内容生态与 AI 产品运营的系统认知。</p>
+                </div>
+                <div class="exp-card-tags">
+                  <span class="exp-card-tagitem">推荐算法</span>
+                  <span class="exp-card-tagitem">模型认知</span>
+                  <span class="exp-card-tagitem">知识库学习</span>
+                </div>
               </div>
-            </a>
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=design">
-              <div class="tileBg g3"></div>
-              <div class="tileMeta">
-                <div class="tileTitle">Design</div>
-                <div class="tileSub">视觉系统 / 交互 / 品牌</div>
+
+              <div class="exp-card">
+                <div class="exp-card-header">
+                  <span class="exp-card-period">2026.03 — 2026.05</span>
+                  <span class="exp-card-tag">实习</span>
+                </div>
+                <div>
+                  <h3 class="exp-card-company">字节跳动</h3>
+                  <p class="exp-card-role">HR 实习生 · TikTok 项目线</p>
+                </div>
+                <div class="exp-card-desc">
+                  <p>支持产品设计及创意设计岗位招聘，搭建作品集评估维度与人才筛选标准。在与优秀设计人才的沟通中，深化对用户体验、视觉表达及产品审美的理解，形成对高质量内容标准与平台体验的产品视角。</p>
+                </div>
+                <div class="exp-card-tags">
+                  <span class="exp-card-tagitem">产品思维</span>
+                  <span class="exp-card-tagitem">用户体验</span>
+                  <span class="exp-card-tagitem">设计标准</span>
+                </div>
               </div>
-            </a>
-            <a class="tile magnetic" data-cursor="hover" href="./work.html?category=lab">
-              <div class="tileBg g4"></div>
-              <div class="tileMeta">
-                <div class="tileTitle">Lab</div>
-                <div class="tileSub">实验 / 策略 / 增长</div>
+
+            </div>
+            <div class="exp-slider-controls">
+              <div class="exp-dots">
+                <span class="exp-dot is-active"></span>
+                <span class="exp-dot"></span>
+                <span class="exp-dot"></span>
               </div>
-            </a>
+              <span class="exp-counter">1 / 3</span>
+            </div>
+            <div class="exp-slider-hint">← 拖拽或滚动切换 →</div>
           </div>
         </section>
 
@@ -246,5 +299,61 @@
 
     <script src="./projects.js?v=20260514_4"></script>
     <script src="./main.js?v=20260514_4"></script>
-  </body>
+    <script>
+      // Initialize ColorBends WebGL background for Hero section
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          if (typeof ColorBends === 'undefined' || typeof THREE === 'undefined') return;
+          var heroBg = document.getElementById('heroWebglBg');
+          if (!heroBg) return;
+          try {
+            new ColorBends(heroBg, {
+              rotation: 90,
+              speed: 0.15,
+              colors: ['#e851ec', '#ff6b9d', '#f472b6', '#c084fc', '#e879f9'],
+              transparent: true,
+              autoRotate: 0,
+              scale: 1.2,
+              frequency: 0.8,
+              warpStrength: 0.6,
+              mouseInfluence: 0.8,
+              parallax: 0.3,
+              noise: 0.1,
+              iterations: 2,
+              intensity: 1.2,
+              bandWidth: 8
+            });
+          } catch(e) {
+            console.error('[ColorBends] Init failed:', e);
+          }
+        }, 500);
+      });
+    </script>
+    <script>
+    // Initialize Circular Gallery
+    document.addEventListener('DOMContentLoaded', function() {
+      const galleryContainer = document.getElementById('circularGallery');
+      if (galleryContainer && typeof CircularGallery !== 'undefined') {
+        new CircularGallery(galleryContainer, {
+          bend: 3,
+          textColor: '#e851ec',
+          borderRadius: 0.05,
+          scrollSpeed: 2,
+          scrollEase: 0.05
+        });
+      }
+      
+      // Initialize Experience Slider
+      const expSlider = document.getElementById('expSlider');
+      if (expSlider && typeof ExpSlider !== 'undefined') {
+        new ExpSlider(expSlider, {
+          gap: 24,
+          peek: 80,
+          scale: 0.9,
+          opacity: 0.4
+        });
+      }
+    });
+  </script>
+</body>
 </html>

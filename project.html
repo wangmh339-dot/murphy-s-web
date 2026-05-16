@@ -8,7 +8,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
     <link rel="stylesheet" href="./styles.css?v=20260516_3" />
-    <link rel="stylesheet" href="./project-styles.css?v=20260516_5" />
+    <link rel="stylesheet" href="./project-styles.css?v=20260516_8" />
   </head>
   <body data-page="project">
     <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -42,7 +42,8 @@
 
       <div class="projectCover" id="projectCover" role="img" aria-label="Project cover"></div>
 
-      <section class="projectContent" aria-label="Project content">
+      <!-- 默认模板：内容运营类项目 -->
+      <section class="projectContent" id="defaultTemplate" aria-label="Project content">
         <div class="projectMain">
 
           <!-- 核心数据 -->
@@ -100,8 +101,175 @@
           </section>
 
         </div>
+      </section>
 
+      <!-- 实验模板：AI/产品探索类项目 - 参考 lab-vibecoding.html 风格 -->
+      <section class="projectContent experimentContent" id="experimentTemplate" aria-label="Project content" style="display: none;">
+        
+        <!-- Ticker 滚动条 -->
+        <div class="expTicker">
+          <div class="expTickerTrack" id="expTickerTrack">
+            <span>Vite</span><span class="expDot">·</span>
+            <span>React</span><span class="expDot">·</span>
+            <span>GitHub Pages</span><span class="expDot">·</span>
+            <span>AI Coding Workflow</span><span class="expDot">·</span>
+            <span>信息架构</span><span class="expDot">·</span>
+            <span>产品化思维</span><span class="expDot">·</span>
+            <span>Prompt Engineering</span><span class="expDot">·</span>
+            <span>内容系统</span><span class="expDot">·</span>
+            <span>持续迭代</span><span class="expDot">·</span>
+          </div>
+        </div>
 
+        <div class="expWrap">
+
+          <!-- 01 实验背景 -->
+          <div class="expSec" data-section="experiment-bg">
+            <div class="expSecHeader">
+              <span class="expSecNum">01</span>
+              <p class="expSecLabel">01 — Background</p>
+              <h2 class="expSecTitle">实验<em>背景</em></h2>
+              <!-- 流体背景装饰 -->
+              <div class="expFluidDecor"></div>
+              <!-- 名字滚动装饰 -->
+              <div class="expNameScroll">
+                <div class="expNameTrack">
+                  <span>EXPERIMENT</span><span>—</span>
+                  <span>EXPERIMENT</span><span>—</span>
+                  <span>EXPERIMENT</span><span>—</span>
+                  <span>EXPERIMENT</span><span>—</span>
+                </div>
+              </div>
+            </div>
+            <div class="expIntro" id="expIntro"></div>
+          </div>
+
+          <!-- 02 核心问题 -->
+          <div class="expSec" data-section="problems">
+            <div class="expSecHeader">
+              <span class="expSecNum">02</span>
+              <p class="expSecLabel">02 — Problem</p>
+              <h2 class="expSecTitle">传统作品集的<em>三个问题</em></h2>
+              <!-- 音波装饰 -->
+              <div class="expWaveDecor">
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+              </div>
+            </div>
+            <div class="expProbGrid" id="expProbGrid"></div>
+          </div>
+
+          <!-- 03 项目目标 -->
+          <div class="expSec" data-section="goal">
+            <div class="expSecHeader">
+              <span class="expSecNum">03</span>
+              <p class="expSecLabel">03 — Goal</p>
+              <h2 class="expSecTitle">核心目标：<em>把个人经历产品化</em></h2>
+            </div>
+            <div class="expGoalWrap" id="expGoalWrap"></div>
+          </div>
+
+          <!-- 04 产品结构 -->
+          <div class="expSec" data-section="structure">
+            <div class="expSecHeader">
+              <span class="expSecNum">04</span>
+              <p class="expSecLabel">04 — Structure</p>
+              <h2 class="expSecTitle">产品结构设计：<em>五个核心栏目</em></h2>
+              <!-- 几何形状装饰 -->
+              <div class="expGeoDecor"></div>
+            </div>
+            <div class="expStructWrap" id="expStructWrap"></div>
+          </div>
+
+          <!-- 05 Vibe Coding 工作流 -->
+          <div class="expSec" data-section="workflow">
+            <div class="expSecHeader">
+              <span class="expSecNum">05</span>
+              <p class="expSecLabel">05 — Workflow</p>
+              <h2 class="expSecTitle"><em>Vibe Coding</em> 工作流</h2>
+              <!-- 名字滚动装饰 -->
+              <div class="expNameScroll">
+                <div class="expNameTrack">
+                  <span>WORKFLOW</span><span>—</span>
+                  <span>WORKFLOW</span><span>—</span>
+                  <span>WORKFLOW</span><span>—</span>
+                  <span>WORKFLOW</span><span>—</span>
+                </div>
+              </div>
+            </div>
+            <div class="expFlowSteps" id="expFlowSteps"></div>
+          </div>
+
+          <!-- 06 产品意识变化 -->
+          <div class="expSec" data-section="mindset">
+            <div class="expSecHeader">
+              <span class="expSecNum">06</span>
+              <p class="expSecLabel">06 — Mindset Shift</p>
+              <h2 class="expSecTitle">做这个项目之后，<em>我开始不同地思考</em></h2>
+              <!-- 流体背景装饰 -->
+              <div class="expFluidDecor"></div>
+            </div>
+            <div class="expInsightPair" id="expInsightPair"></div>
+            <div class="expMindsetProse" id="expMindsetProse"></div>
+          </div>
+
+          <!-- 07 成果 -->
+          <div class="expSec" data-section="outcome">
+            <div class="expSecHeader">
+              <span class="expSecNum">07</span>
+              <p class="expSecLabel">07 — Outcome</p>
+              <h2 class="expSecTitle">项目<em>成果</em></h2>
+              <!-- 音波装饰 -->
+              <div class="expWaveDecor">
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+                <span class="expWaveBar"></span>
+              </div>
+            </div>
+            <div class="expOutcomeGrid" id="expOutcomeGrid"></div>
+            <div class="expOutcomeDetails" id="expOutcomeDetails"></div>
+          </div>
+
+          <!-- 08 反思 -->
+          <div class="expSec" data-section="reflection">
+            <div class="expSecHeader">
+              <span class="expSecNum">08</span>
+              <p class="expSecLabel">08 — Reflection</p>
+              <h2 class="expSecTitle">项目<em>反思</em></h2>
+              <!-- Slogan 装饰 -->
+              <div class="expSloganDecor">On the road, seeking a truer connection between people and the world.</div>
+            </div>
+            <div class="expReflection" id="expReflection"></div>
+          </div>
+
+          <!-- 09 后续迭代 -->
+          <div class="expSec" data-section="next">
+            <div class="expSecHeader">
+              <span class="expSecNum">09</span>
+              <p class="expSecLabel">09 — Next Steps</p>
+              <h2 class="expSecTitle">后续<em>迭代方向</em></h2>
+                <div class="expGalleryTile"></div>
+                <div class="expGalleryTile"></div>
+                <div class="expGalleryTile"></div>
+              </div>
+            </div>
+            <div class="expFutureGrid" id="expFutureGrid"></div>
+          </div>
+
+        </div>
       </section>
 
       <footer class="footer">
@@ -109,7 +277,7 @@
       </footer>
     </main>
 
-    <script src="./projects.js?v=20260516_5"></script>
-    <script src="./main.js?v=20260516_5"></script>
+    <script src="./projects.js?v=20260516_7"></script>
+    <script src="./main.js?v=20260516_7"></script>
   </body>
 </html>

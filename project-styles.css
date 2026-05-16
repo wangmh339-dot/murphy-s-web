@@ -995,3 +995,959 @@
     padding: 20px 0;
   }
 }
+
+/* ========== 实验模板样式 - 字体统一 + 色块层级 ========== */
+
+/* Ticker 滚动条 */
+.expTicker {
+  overflow: hidden;
+  border-bottom: 1px solid var(--hair);
+  padding: 16px 0;
+  white-space: nowrap;
+  margin-top: 32px;
+  background: linear-gradient(90deg, transparent, rgba(232, 81, 236, 0.03), transparent);
+}
+
+.expTickerTrack {
+  display: inline-block;
+  animation: expScroll 28s linear infinite;
+}
+
+.expTickerTrack span {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 32px;
+}
+
+.expDot {
+  color: var(--accent) !important;
+  padding: 0 6px !important;
+}
+
+@keyframes expScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* 主容器 */
+.expWrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 60px 160px;
+}
+
+/* 区块通用 */
+.expSec {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.expSec:last-child {
+  border-bottom: none;
+}
+
+/* 区块标签 - 统一字体 */
+.expSecLabel {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.expSecLabel::after {
+  content: '';
+  height: 1px;
+  width: 80px;
+  background: var(--hair);
+  display: block;
+}
+
+/* 区块标题 - 更有张力的字体 */
+.expSecTitle {
+  font-family: "Bebas Neue", "Noto Sans SC", system-ui, sans-serif;
+  font-size: clamp(36px, 5.5vw, 68px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.expSecTitle em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* 标题装饰元素 - 引用网站视觉 */
+.expSecTitle::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 0;
+  
+  width: 6px;
+  height: 60%;
+  background: linear-gradient(180deg, var(--accent), transparent);
+  border-radius: 3px;
+  opacity: 0.6;
+}
+
+/* 标题编号样式 */
+.expSecNum {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(72px, 10vw, 120px);
+  font-weight: 400;
+  color: var(--accent);
+  opacity: 0.08;
+  line-height: 1;
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 实验背景 - 统一字体 */
+.expIntro {
+  max-width: 640px;
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.8;
+  border-left: 3px solid var(--accent);
+  padding-left: 28px;
+}
+
+.expIntro strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* 问题卡片网格 - 色块层级 */
+.expProbGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.expProbCard {
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(250,250,250,0.9) 100%);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.expProbCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: -40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.6;
+}
+
+.expProbCard:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(232, 81, 236, 0.08);
+}
+
+.expProbIcon {
+  font-family: "Bebas Neue", serif;
+  font-size: 48px;
+  font-style: italic;
+  color: var(--hair);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.expProbTitle {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.expProbText {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.expProbList {
+  margin-top: 16px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.expProbList li {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--dim);
+  padding: 8px 0;
+  border-top: 1px solid var(--hair);
+}
+
+.expProbList li::before {
+  content: '— ';
+  color: var(--accent);
+}
+
+/* 两栏布局 */
+.expG2 {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.expProse {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 520px;
+}
+
+.expProse p + p {
+  margin-top: 20px;
+}
+
+.expProse strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* 目标卡片 - 色块层级 */
+.expGoalCard {
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,252,252,0.98) 100%);
+}
+
+.expGoalHeader {
+  background: linear-gradient(90deg, rgba(232, 81, 236, 0.06), transparent);
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.expGoalHeader span {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.expGoalItem {
+  padding: 24px;
+  border-bottom: 1px solid var(--hair);
+  display: flex;
+  gap: 20px;
+  align-items: start;
+}
+
+.expGoalItem:last-child {
+  border-bottom: none;
+}
+
+.expGoalNum {
+  font-family: "Bebas Neue", serif;
+  font-size: 32px;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.expGoalItemTitle {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.expGoalItemDesc {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* 结构表格 - 色块层级 */
+.expStructTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,252,252,0.98) 100%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.expStructTable th,
+.expStructTable td {
+  text-align: left;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--hair);
+  font-size: 14px;
+}
+
+.expStructTable th {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: linear-gradient(90deg, rgba(232, 81, 236, 0.06), transparent);
+}
+
+.expStructTable td {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  color: var(--muted);
+}
+
+.expStructTable td:first-child {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  width: 130px;
+}
+
+.expStructTable tr:last-child td {
+  border-bottom: none;
+}
+
+/* 工作流 - 色块层级 */
+.expFlowSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.expFlowItem {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 32px;
+  padding: 36px 0;
+  border-top: 1px solid var(--hair);
+  align-items: start;
+}
+
+.expFlowItem:last-child {
+  border-bottom: 1px solid var(--hair);
+}
+
+.expFlowNum {
+  font-family: "Bebas Neue", serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  padding-top: 4px;
+  opacity: 0.6;
+}
+
+.expFlowName {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  margin-bottom: 10px;
+  letter-spacing: 0.03em;
+}
+
+.expFlowDesc {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.expFlowTags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.expFlowTag {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  padding: 5px 12px;
+  background: rgba(232, 81, 236, 0.06);
+  border: 1px solid rgba(232, 81, 236, 0.15);
+  color: var(--accent);
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* 洞察对比 - 色块层级 */
+.expInsightPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.expInsightSide {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,252,252,0.98) 100%);
+  padding: 40px;
+}
+
+.expInsightSide:first-child {
+  background: linear-gradient(135deg, rgba(250,250,250,0.98) 0%, rgba(245,245,245,0.95) 100%);
+}
+
+.expInsightSideLabel {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(232, 81, 236, 0.2);
+}
+
+.expInsightList {
+  list-style: none;
+}
+
+.expInsightList li {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hair);
+  line-height: 1.6;
+}
+
+.expInsightList li:last-child {
+  border-bottom: none;
+}
+
+.expInsightList li span {
+  color: var(--accent);
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+/* 成果网格 - 色块层级 */
+.expOutcomeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 48px;
+}
+
+.expOutcomeItem {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,252,252,0.98) 100%);
+  padding: 48px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.expOutcomeItem::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: -40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.5;
+}
+
+.expOutcomeValue {
+  font-family: "Bebas Neue", serif;
+  font-size: 56px;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.expOutcomeLabel {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* 成果详情 - 横版全屏宽度 */
+.expOutcomeDetails {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  width: 100%;
+}
+
+.expOutcomeDetails .expOutcomeCard {
+  flex: 1;
+  border-radius: 0;
+  border-right: none;
+}
+
+.expOutcomeDetails .expOutcomeCard:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.expOutcomeDetails .expOutcomeCard:last-child {
+  border-radius: 0 8px 8px 0;
+  border-right: 1px solid var(--hair);
+}
+
+.expOutcomeCard {
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  padding: 28px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,252,252,0.98) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.expOutcomeCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: -40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.5;
+}
+
+.expOutcomeCardTitle {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--fg);
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+/* 反思区块 - 色块层级 */
+.expReflection {
+  background: linear-gradient(135deg, rgba(232, 81, 236, 0.04) 0%, rgba(255,255,255,0.95) 50%, rgba(252,252,252,0.98) 100%);
+  border: 1px solid rgba(232, 81, 236, 0.15);
+  border-radius: 8px;
+  padding: 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.expReflection::before {
+  content: '"';
+  position: absolute;
+  top: 12px;
+  left: 32px;
+  font-family: "Bebas Neue", serif;
+  font-size: 120px;
+  color: rgba(232, 81, 236, 0.1);
+  line-height: 1;
+}
+
+.expReflectionQuote {
+  font-family: "Bebas Neue", "Noto Sans SC", system-ui, sans-serif;
+  font-size: 32px;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1.4;
+  margin-bottom: 32px;
+  padding-top: 24px;
+  max-width: 680px;
+}
+
+.expReflectionBody {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 640px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(232, 81, 236, 0.2);
+}
+
+.expReflectionBody p + p {
+  margin-top: 18px;
+}
+
+.expReflectionBody strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* 未来网格 - 色块层级 */
+.expFutureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.expFutureItem {
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  padding: 28px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,252,252,0.98) 100%);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.expFutureItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: -40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.6;
+}
+
+.expFutureItem:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(232, 81, 236, 0.1);
+}
+
+.expFutureDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-bottom: 16px;
+  box-shadow: 0 0 0 3px rgba(232, 81, 236, 0.15);
+}
+
+.expFutureTitle {
+  font-family: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+.expFutureDesc {
+  font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ========== 智能配图装饰元素 - 引用网站视觉 ========== */
+
+/* 区块头部配图区域 */
+.expSecHeader {
+  position: relative;
+  margin-bottom: 48px;
+}
+
+/* 流体背景装饰 - 引用 Hero WebGL */
+.expFluidDecor {
+  position: absolute;
+  right: -40px;
+  top: 0;
+  width: 40%;
+  height: 200px;
+  background: linear-gradient(135deg, 
+    rgba(232, 81, 236, 0.15) 0%, 
+    rgba(255, 107, 157, 0.1) 25%,
+    rgba(196, 132, 252, 0.08) 50%,
+    rgba(232, 121, 249, 0.05) 75%,
+    transparent 100%);
+  border-radius: 100px 0 0 100px;
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.expFluidDecor::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  background: linear-gradient(90deg, 
+    rgba(232, 81, 236, 0.2), 
+    rgba(255, 107, 157, 0.15),
+    rgba(196, 132, 252, 0.1));
+  border-radius: 80px 0 0 80px;
+  filter: blur(20px);
+}
+
+/* 名字滚动装饰 - 引用 Name Capsule */
+.expNameScroll {
+  position: absolute;
+  right: -40px;
+  top: 0;
+  
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.expNameTrack {
+  display: inline-block;
+  animation: expNameScroll 20s linear infinite;
+}
+
+.expNameTrack span {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 120px;
+  font-weight: 400;
+  color: var(--accent);
+  padding: 0 20px;
+  letter-spacing: 0.05em;
+}
+
+@keyframes expNameScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* 音波装饰 - 引用 Contact Wave */
+.expWaveDecor {
+  position: absolute;
+  right: 60px;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 60px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.expWaveBar {
+  width: 4px;
+  background: linear-gradient(to top, var(--accent), rgba(232, 81, 236, 0.3));
+  border-radius: 2px;
+  animation: expWaveJump 1.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.08s);
+}
+
+.expWaveBar:nth-child(1) { height: 20%; --i: 0; }
+.expWaveBar:nth-child(2) { height: 45%; --i: 1; }
+.expWaveBar:nth-child(3) { height: 70%; --i: 2; }
+.expWaveBar:nth-child(4) { height: 55%; --i: 3; }
+.expWaveBar:nth-child(5) { height: 85%; --i: 4; }
+.expWaveBar:nth-child(6) { height: 60%; --i: 5; }
+.expWaveBar:nth-child(7) { height: 40%; --i: 6; }
+.expWaveBar:nth-child(8) { height: 75%; --i: 7; }
+.expWaveBar:nth-child(9) { height: 50%; --i: 8; }
+.expWaveBar:nth-child(10) { height: 30%; --i: 9; }
+
+@keyframes expWaveJump {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.6); }
+}
+
+/* 个人照片装饰 - 引用 About Avatar */
+.expAvatarDecor {
+  position: absolute;
+  right: 80px;
+  top: 0;
+  width: 120px;
+  height: 150px;
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0.8;
+  transform: rotate(3deg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.expAvatarDecor img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(30%) contrast(1.1);
+  transition: filter 0.3s ease;
+}
+
+.expAvatarDecor:hover img {
+  filter: grayscale(0%) contrast(1);
+}
+
+/* 图库网格装饰 - 引用 Gallery */
+.expGalleryDecor {
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 80px);
+  grid-template-rows: repeat(2, 60px);
+  gap: 8px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.expGalleryTile {
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.expGalleryTile:nth-child(1) {
+  background: linear-gradient(135deg, rgba(232, 81, 236, 0.2), rgba(255, 107, 157, 0.15));
+}
+.expGalleryTile:nth-child(2) {
+  background: linear-gradient(135deg, rgba(196, 132, 252, 0.2), rgba(232, 121, 249, 0.15));
+}
+.expGalleryTile:nth-child(3) {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(232, 81, 236, 0.2));
+}
+.expGalleryTile:nth-child(4) {
+  background: linear-gradient(135deg, rgba(232, 121, 249, 0.15), rgba(196, 132, 252, 0.2));
+}
+
+/* Slogan 文字装饰 */
+.expSloganDecor {
+  position: absolute;
+  right: -40px;
+  bottom: -20px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  opacity: 0.4;
+  max-width: 200px;
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* 几何形状装饰 */
+.expGeoDecor {
+  position: absolute;
+  right: 100px;
+  top: 30px;
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(232, 81, 236, 0.2);
+  border-radius: 50%;
+  animation: expGeoRotate 20s linear infinite;
+}
+
+.expGeoDecor::before {
+  content: '';
+  position: absolute;
+  inset: 15px;
+  border: 1px solid rgba(232, 81, 236, 0.15);
+  border-radius: 50%;
+}
+
+@keyframes expGeoRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .expWrap {
+    padding: 0 32px 120px;
+  }
+  
+  .expSec {
+    padding: 80px 0;
+  }
+  
+  .expProbGrid,
+  .expOutcomeGrid,
+  .expOutcomeDetails,
+  .expFutureGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .expG2,
+  .expInsightPair {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .expFlowItem {
+    grid-template-columns: 48px 1fr;
+  }
+  
+  /* 移动端隐藏装饰元素 */
+  .expFluidDecor,
+  .expNameScroll,
+  .expWaveDecor,
+  .expAvatarDecor,
+  .expGalleryDecor,
+  .expGeoDecor {
+    display: none;
+  }
+}
+
+/* 动画 */
+.expSec {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.expSec.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.expProbCard,
+.expFlowItem,
+.expInsightSide,
+.expOutcomeItem,
+.expOutcomeCard,
+.expFutureItem {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.6s ease;
+}
+
+.expProbCard.is-visible,
+.expFlowItem.is-visible,
+.expInsightSide.is-visible,
+.expOutcomeItem.is-visible,
+.expOutcomeCard.is-visible,
+.expFutureItem.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

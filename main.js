@@ -863,8 +863,9 @@ function initHoverPreviewForLinks(root) {
     preview.dataset.ready = "1";
   }
   const img = qs(".img", preview);
-  let lastLink = null;
-  let lastItem = null;
+  
+  // 使用 WeakMap 存储每个元素的状态，避免内存泄漏
+  const elementState = new WeakMap();
 
   let tx = 0;
   let ty = 0;
@@ -890,22 +891,36 @@ function initHoverPreviewForLinks(root) {
     preview.classList.add("isOn");
     window.addEventListener("mousemove", onMove, { passive: true });
     const item = el.closest(".workItem");
-    if (lastItem && lastItem !== item) lastItem.classList.remove("isHoveringItem");
+    
+    // 清理之前的 hover 状态
+    qsa(".workItem.isHoveringItem", root || document).forEach((item) => {
+      item.classList.remove("isHoveringItem");
+    });
+    
     if (item) item.classList.add("isHoveringItem");
-    lastItem = item;
-    lastLink = el;
+    elementState.set(el, { item });
   };
-  const hide = () => {
+  
+  const hide = (el) => {
     preview.classList.remove("isOn");
     window.removeEventListener("mousemove", onMove);
-    if (lastItem) lastItem.classList.remove("isHoveringItem");
-    lastItem = null;
-    lastLink = null;
+    const state = elementState.get(el);
+    if (state && state.item) {
+      state.item.classList.remove("isHoveringItem");
+    }
+    elementState.delete(el);
   };
 
+  // 先移除旧的事件监听器（通过克隆替换）
+  qsa(".workLink", root || document).forEach((a) => {
+    const newA = a.cloneNode(true);
+    a.parentNode.replaceChild(newA, a);
+  });
+  
+  // 重新绑定事件
   qsa(".workLink", root || document).forEach((a) => {
     a.addEventListener("mouseenter", () => show(a));
-    a.addEventListener("mouseleave", hide);
+    a.addEventListener("mouseleave", () => hide(a));
   });
 }
 
@@ -920,7 +935,6 @@ function initProjectPage() {
   const title = qs("#projectName");
   const titleEn = qs("#projectNameEn");
   const deck = qs("#projectDeck");
-  const link = qs("#projectLink");
   const cover = qs("#projectCover");
 
   if (title) title.textContent = p?.title || "Project";
@@ -948,15 +962,33 @@ function initProjectPage() {
     metaInline.innerHTML = parts.join("");
   }
 
-  // 外链
-  if (link) {
-    if (p?.link) {
-      link.innerHTML = `<a class="magnetic" data-cursor="hover" href="${escapeAttr(p.link)}" target="_blank" rel="noreferrer">外链 / 项目地址 ↗</a>`;
-    } else {
-      link.innerHTML = ``;
-    }
+  // 根据模板类型选择渲染方式
+  const template = p?.template || "default";
+  const defaultTemplate = qs("#defaultTemplate");
+  const experimentTemplate = qs("#experimentTemplate");
+
+  if (template === "experiment") {
+    // 显示实验模板，隐藏默认模板
+    if (defaultTemplate) defaultTemplate.style.display = "none";
+    if (experimentTemplate) experimentTemplate.style.display = "block";
+    renderExperimentTemplate(p);
+  } else {
+    // 显示默认模板，隐藏实验模板
+    if (defaultTemplate) defaultTemplate.style.display = "block";
+    if (experimentTemplate) experimentTemplate.style.display = "none";
+    renderDefaultTemplate(p);
   }
 
+  // 滚动触发动画
+  initProjectScrollAnimations();
+
+  // 初始化交互
+  initMagnetism();
+  if (window.__bindCursorHover) window.__bindCursorHover();
+}
+
+// 默认模板渲染（内容运营类项目）
+function renderDefaultTemplate(p) {
   // 01 核心数据
   const statsRow = qs("#statsRow");
   if (statsRow && Array.isArray(p?.stats) && p.stats.length) {
@@ -1078,19 +1110,193 @@ function initProjectPage() {
       ${cv.note ? `<div class="conversionNote">${cv.note}</div>` : ""}
     `;
   }
+}
 
-  // 滚动触发动画
-  initProjectScrollAnimations();
+// 实验模板渲染（AI/产品探索类项目）- 参考 lab-vibecoding.html 风格
+function renderExperimentTemplate(p) {
+  // 01 实验背景
+  const expIntro = qs("#expIntro");
+  if (expIntro && p?.experiment) {
+    expIntro.innerHTML = `
+      <p>${p.experiment.background}</p>
+      <p>${p.experiment.motivation}</p>
+    `;
+  }
 
-  // 初始化交互
-  initMagnetism();
-  if (window.__bindCursorHover) window.__bindCursorHover();
+  // 02 核心问题
+  const expProbGrid = qs("#expProbGrid");
+  if (expProbGrid && Array.isArray(p?.problems) && p.problems.length) {
+    expProbGrid.innerHTML = p.problems.map(prob => `
+      <div class="expProbCard">
+        <div class="expProbIcon">${escapeHtml(prob.num)}</div>
+        <p class="expProbTitle">${escapeHtml(prob.title)}</p>
+        <p class="expProbText">${escapeHtml(prob.desc)}</p>
+      </div>
+    `).join("");
+  }
+
+  // 03 项目目标
+  const expGoalWrap = qs("#expGoalWrap");
+  if (expGoalWrap && p?.goal) {
+    const goal = p.goal;
+    expGoalWrap.innerHTML = `
+      <div class="expG2">
+        <div class="expProse">
+          <p>${goal.desc}</p>
+        </div>
+        <div class="expGoalCard">
+          <div class="expGoalHeader">
+            <span>三个核心目标</span>
+          </div>
+          ${(goal.items || []).map((item, i) => `
+            <div class="expGoalItem">
+              <span class="expGoalNum">0${i + 1}</span>
+              <div>
+                <p class="expGoalItemTitle">${escapeHtml(item.title)}</p>
+                <p class="expGoalItemDesc">${escapeHtml(item.desc)}</p>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  // 04 产品结构
+  const expStructWrap = qs("#expStructWrap");
+  if (expStructWrap && p?.structure) {
+    const struct = p.structure;
+    expStructWrap.innerHTML = `
+      <div class="expG2" style="gap: 40px;">
+        <div>
+          <table class="expStructTable">
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>内容方向</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(struct.columns || []).map(col => `
+                <tr>
+                  <td>${escapeHtml(col.name)}</td>
+                  <td>${escapeHtml(col.desc)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="expProse">
+          <p>${struct.desc}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 05 Vibe Coding 工作流
+  const expFlowSteps = qs("#expFlowSteps");
+  if (expFlowSteps && Array.isArray(p?.workflow) && p.workflow.length) {
+    expFlowSteps.innerHTML = p.workflow.map((step, i) => `
+      <div class="expFlowItem">
+        <span class="expFlowNum">${['i', 'ii', 'iii'][i]}</span>
+        <div>
+          <p class="expFlowName">${escapeHtml(step.title)}</p>
+          <p class="expFlowDesc">${escapeHtml(step.desc)}</p>
+          <div class="expFlowTags">
+            ${(step.tags || []).map(tag => `<span class="expFlowTag">${escapeHtml(tag)}</span>`).join("")}
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // 06 产品意识变化
+  const expInsightPair = qs("#expInsightPair");
+  if (expInsightPair && p?.mindset) {
+    const mindset = p.mindset;
+    expInsightPair.innerHTML = `
+      <div class="expInsightSide">
+        <p class="expInsightSideLabel">以前更关注</p>
+        <ul class="expInsightList">
+          ${(mindset.before || []).map(item => `<li><span>—</span>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </div>
+      <div class="expInsightSide">
+        <p class="expInsightSideLabel">现在会开始思考</p>
+        <ul class="expInsightList">
+          ${(mindset.after || []).map(item => `<li><span>→</span>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
+
+  const expMindsetProse = qs("#expMindsetProse");
+  if (expMindsetProse && p?.mindset?.conclusion) {
+    expMindsetProse.innerHTML = `
+      <div class="expProse" style="margin-top: 32px;">
+        <p>${p.mindset.conclusion}</p>
+      </div>
+    `;
+  }
+
+  // 07 成果
+  const expOutcomeGrid = qs("#expOutcomeGrid");
+  if (expOutcomeGrid && Array.isArray(p?.outcomes) && p.outcomes.length) {
+    expOutcomeGrid.innerHTML = p.outcomes.map(out => `
+      <div class="expOutcomeItem">
+        <div class="expOutcomeValue">${escapeHtml(out.value)}</div>
+        <div class="expOutcomeLabel">${escapeHtml(out.label)}</div>
+      </div>
+    `).join("");
+  }
+
+  const expOutcomeDetails = qs("#expOutcomeDetails");
+  if (expOutcomeDetails && p?.outcomeDetails) {
+    const details = p.outcomeDetails;
+    expOutcomeDetails.innerHTML = `
+      <div class="expOutcomeDetails" style="margin-top: 40px;">
+        ${(details.cards || []).map(card => `
+          <div class="expOutcomeCard">
+            <p class="expOutcomeCardTitle">${escapeHtml(card.title)}</p>
+            <ul class="expProbList">
+              ${(card.items || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  // 08 反思
+  const expReflection = qs("#expReflection");
+  if (expReflection && p?.reflection) {
+    expReflection.innerHTML = `
+      <div class="expReflection">
+        <p class="expReflectionQuote">${escapeHtml(p.reflection.quote)}</p>
+        <div class="expReflectionBody">
+          ${p.reflection.body}
+        </div>
+      </div>
+    `;
+  }
+
+  // 09 后续迭代
+  const expFutureGrid = qs("#expFutureGrid");
+  if (expFutureGrid && Array.isArray(p?.nextSteps) && p.nextSteps.length) {
+    expFutureGrid.innerHTML = p.nextSteps.map((step, i) => `
+      <div class="expFutureItem">
+        <div class="expFutureDot"></div>
+        <p class="expFutureTitle">${escapeHtml(step.title || `方向 ${i + 1}`)}</p>
+        <p class="expFutureDesc">${escapeHtml(step.desc || step)}</p>
+      </div>
+    `).join("");
+  }
 }
 
 function initProjectScrollAnimations() {
   if (prefersReducedMotion()) {
     // 如果用户偏好减少动画，直接显示所有元素
-    document.querySelectorAll('.projSection, .statCard, .strategyCard, .caseItem, .insightCard, .reflectCol, .conversionStep, .conversionGallery img, .conversionNote').forEach(el => {
+    document.querySelectorAll('.projSection, .statCard, .strategyCard, .caseItem, .insightCard, .reflectCol, .conversionStep, .conversionGallery img, .conversionNote, .expSec, .expProbCard, .expFlowItem, .expInsightSide, .expOutcomeItem, .expOutcomeCard, .expFutureItem').forEach(el => {
       el.classList.add('is-visible');
     });
     return;
@@ -1120,7 +1326,15 @@ function initProjectScrollAnimations() {
     '.reflectCol',
     '.conversionStep',
     '.conversionGallery img',
-    '.conversionNote'
+    '.conversionNote',
+    // 实验模板元素
+    '.expSec',
+    '.expProbCard',
+    '.expFlowItem',
+    '.expInsightSide',
+    '.expOutcomeItem',
+    '.expOutcomeCard',
+    '.expFutureItem'
   ];
 
   selectors.forEach(selector => {

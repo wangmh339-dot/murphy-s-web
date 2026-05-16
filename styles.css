@@ -152,6 +152,25 @@ body::after{ content:none; }
   justify-content:center;
   align-items:center;
   text-align:center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* WebGL Fluid Background for Hero */
+.hero-webgl-bg{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+}
+.hero-webgl-bg canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+.hero > *:not(.hero-webgl-bg){
+  position: relative;
+  z-index: 1;
 }
 .feed{ padding-top: 12px; }
 .feedSection{
@@ -385,30 +404,7 @@ body::after{ content:none; }
   position: relative;
   display: inline-block;
 }
-/* 粉色“噪点拖影”：用同字叠加 + SVG turbulence 产生颗粒感 */
-.nameTrack .w::before,
-.nameTrack .w::after{
-  content: attr(data-t);
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  color: var(--accent);
-  /* 轻微“脱尾”：尾部渐隐（往右淡出） */
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 55%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 0%, #000 55%, transparent 100%);
-  filter: url(#pinkNoise) blur(0.6px);
-  mix-blend-mode: multiply;
-}
-.nameTrack .w::before{
-  opacity: .20;
-  transform: translateX(16px);
-}
-.nameTrack .w::after{
-  opacity: .08;
-  transform: translateX(32px);
-  filter: url(#pinkNoise) blur(1.15px);
-}
+
 .nameTrack .sep{
   font-family: "Space Grotesk", Inter, system-ui, sans-serif;
   font-weight: 300;
@@ -580,13 +576,11 @@ body.isMarqueeOn .nameInner{
   margin-top: 44px;
   display:flex;
   flex-direction:column;
+  transition: opacity .18s ease, transform .18s ease;
 }
 .workList.isSwitching{
   opacity: 0;
   transform: translateY(12px);
-}
-.workList{
-  transition: opacity .18s ease, transform .18s ease;
 }
 .workItem{
   padding: 12px 0;
