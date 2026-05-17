@@ -276,14 +276,39 @@ window.PROJECTS = [
     link: ""
   },
   {
-    id: "painting-01",
-    title: "Paintings — Study Series",
-    year: "2023",
+    id: "photography-01",
+    title: "Photography — Visual Collection",
+    titleEn: "Photography — Visual Collection",
+    year: "2023-2024",
     category: "visual",
-    tags: ["绘画", "练习"],
-    preview: "./assets/project-placeholder.svg",
-    deck: "以色彩与形体训练为主的作品合集。",
-    details: "建议补充：材料、尺寸、时间跨度与个人风格探索。",
-    link: ""
+    tags: ["摄影", "城市风光", "人文纪实", "风格摄影"],
+    preview: "./assets/photography/city/1.jpg",
+    cover: "./assets/photography/city/1.jpg",
+    deck: "个人摄影作品集，包含城市风光、风格摄影与人文纪实三个系列。",
+    details: "通过镜头捕捉城市脉搏、视觉美学与人文故事。",
+    link: "./visual.html",
+    sections: [
+      {
+        name: "城市风光",
+        nameEn: "Cityscape",
+        desc: "3D卡片堆叠展示，带留白与深度感",
+        count: 8,
+        preview: "./assets/photography/city/1.jpg"
+      },
+      {
+        name: "风格摄影",
+        nameEn: "Style",
+        desc: "全屏水平无限滚动",
+        count: 4,
+        preview: "./assets/photography/style/1.jpg"
+      },
+      {
+        name: "人文纪实",
+        nameEn: "Documentary",
+        desc: "全屏水平无限滚动",
+        count: 3,
+        preview: "./assets/photography/documentary/1.jpg"
+      }
+    ]
   }
 ];

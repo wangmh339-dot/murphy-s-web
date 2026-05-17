@@ -658,6 +658,8 @@ function initHomeProjectsEmbed() {
       .map((p) => {
         const sub = [p.year, p.category].filter(Boolean).join(" · ");
         const preview = p.preview ? String(p.preview) : "";
+        // 如果项目有自定义 link，使用它；否则使用默认 project.html?id=xxx
+        const href = p.link ? p.link : `./project.html?id=${encodeURIComponent(p.id)}`;
         return `
           <div class="workItem">
             <a
@@ -665,7 +667,7 @@ function initHomeProjectsEmbed() {
               data-cursor="hover"
               data-preview="${escapeAttr(preview)}"
               data-cap="${escapeAttr(p.title)}"
-              href="./project.html?id=${encodeURIComponent(p.id)}"
+              href="${escapeAttr(href)}"
             >
               <div class="workTitle">${escapeHtml(p.title)}</div>
             </a>
@@ -813,6 +815,8 @@ function initWorkPage() {
         .map((p) => {
           const sub = [p.year, p.category].filter(Boolean).join(" · ");
           const preview = p.preview ? String(p.preview) : "";
+          // 如果项目有自定义 link，使用它；否则使用默认 project.html?id=xxx
+          const href = p.link ? p.link : `./project.html?id=${encodeURIComponent(p.id)}`;
           return `
             <div class="workItem">
               <a
@@ -820,7 +824,7 @@ function initWorkPage() {
                 data-cursor="hover"
                 data-preview="${escapeAttr(preview)}"
                 data-cap="${escapeAttr(p.title)}"
-                href="./project.html?id=${encodeURIComponent(p.id)}"
+                href="${escapeAttr(href)}"
               >
                 <div class="workTitle">${escapeHtml(p.title)}</div>
               </a>
