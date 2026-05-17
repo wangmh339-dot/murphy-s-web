@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小红书内容运营 — Murphy Ong 王梦晖</title>
+    <meta name="description" content="亚文化垂类账号案例 — 街头涂鸦 × 海娜手绘" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --fg: #f5f5f5;
+        --muted: #666;
+        --accent: #e851ec;
+      }
+
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* ── Navigation ── */
+      .n-nav {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 100;
+        padding: 24px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        mix-blend-mode: difference;
+      }
+
+      .n-nav a {
+        color: var(--fg);
+        text-decoration: none;
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 14px;
+        letter-spacing: .05em;
+        transition: opacity .3s;
+      }
+
+      .n-nav a:hover { opacity: .6; }
+      .n-nav-brand { font-weight: 500; }
+      .n-nav-links { display: flex; gap: 32px; }
+
+      /* ── Hero ── */
+      .n-hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .n-hero-bg {
+        position: absolute;
+        inset: 0;
+        opacity: .12;
+        background: url('./assets/xhs-henna-1-new.jpg') center/cover no-repeat;
+        filter: grayscale(100%);
+        transform: scale(1.1);
+        transition: transform 8s ease-out;
+      }
+
+      .n-hero:hover .n-hero-bg { transform: scale(1); }
+
+      .n-hero-content { position: relative; z-index: 1; }
+
+      .n-hero-year {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        letter-spacing: .2em;
+        color: var(--accent);
+        margin-bottom: 24px;
+      }
+
+      .n-hero-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(48px, 10vw, 120px);
+        letter-spacing: -.02em;
+        line-height: .9;
+        margin-bottom: 16px;
+        white-space: nowrap;
+      }
+
+      .n-hero-sub {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 14px;
+        color: var(--muted);
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+
+      .n-hero-hint {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: .1em;
+        animation: nHint 2s infinite;
+      }
+
+      @keyframes nHint {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50%      { transform: translateX(-50%) translateY(-10px); }
+      }
+
+      /* ── Section ── */
+      .n-section {
+        padding: 120px 40px;
+        position: relative;
+      }
+
+      .n-section--compact {
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+
+      .n-section-head {
+        max-width: 900px;
+        margin: 0 auto 80px;
+      }
+
+      .n-section--compact .n-section-head {
+        margin-bottom: 40px;
+      }
+
+      .n-section-label {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: .15em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+
+      .n-section-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(48px, 8vw, 96px);
+        line-height: 1;
+        letter-spacing: -.02em;
+        white-space: nowrap;
+      }
+
+      .n-section-desc {
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.7;
+        color: rgba(255,255,255,.55);
+        margin-top: 20px;
+        font-weight: 300;
+      }
+
+      /* ── Stats Grid ── */
+      .n-stats {
+        max-width: 900px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+        background: rgba(255,255,255,.06);
+      }
+
+      .n-stat {
+        background: var(--bg);
+        padding: 40px 32px;
+        text-align: center;
+      }
+
+      .n-stat-num {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 56px;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .n-stat-label {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      /* ── Content Strategies ── */
+      .n-strategies {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px;
+        background: rgba(255,255,255,.06);
+      }
+
+      .n-strategy {
+        background: var(--bg);
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 360px;
+      }
+
+      .n-strategy-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .6s ease;
+      }
+
+      .n-strategy:hover .n-strategy-img { transform: scale(1.03); }
+
+      .n-strategy-body {
+        padding: 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .n-strategy-tag {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 12px;
+      }
+
+      .n-strategy-title {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        line-height: 1.3;
+      }
+
+      .n-strategy-desc {
+        font-size: 14px;
+        line-height: 1.7;
+        color: rgba(255,255,255,.6);
+        margin-bottom: 16px;
+      }
+
+      .n-strategy-labels {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .n-strategy-label {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: .05em;
+        color: rgba(255,255,255,.5);
+        border: 1px solid rgba(255,255,255,.12);
+        padding: 4px 12px;
+        border-radius: 2px;
+      }
+
+      /* ── Content Cases ── */
+      .n-cases {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        background: rgba(255,255,255,.06);
+      }
+
+      .n-case {
+        background: var(--bg);
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 320px;
+      }
+
+      .n-case-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .6s ease;
+      }
+
+      .n-case:hover .n-case-img { transform: scale(1.03); }
+
+      .n-case-body {
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .n-case-tag {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 12px;
+      }
+
+      .n-case-title {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        line-height: 1.3;
+      }
+
+      .n-case-metrics {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 16px;
+      }
+
+      .n-case-metric {
+        text-align: center;
+      }
+
+      .n-case-metric strong {
+        display: block;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 28px;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .n-case-metric span {
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: .05em;
+      }
+
+      .n-case-desc {
+        font-size: 14px;
+        line-height: 1.7;
+        color: rgba(255,255,255,.6);
+      }
+
+      .n-case-highlight {
+        margin-top: 12px;
+        padding: 10px 16px;
+        background: rgba(232, 81, 236, .08);
+        border-left: 2px solid var(--accent);
+        font-size: 13px;
+        line-height: 1.6;
+        color: rgba(255,255,255,.7);
+      }
+
+      /* ── Insights Feed ── */
+      .n-insights {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        background: rgba(255,255,255,.06);
+      }
+
+      .n-insight {
+        background: var(--bg);
+        padding: 32px 40px;
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .n-insight-num {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 36px;
+        color: var(--accent);
+        line-height: 1;
+        opacity: .7;
+      }
+
+      .n-insight h4 {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .n-insight p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: rgba(255,255,255,.55);
+      }
+
+      /* ── Reflection ── */
+      .n-reflect {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+      }
+
+      .n-reflect h4 {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 24px;
+      }
+
+      .n-reflect ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .n-reflect li {
+        font-size: 15px;
+        line-height: 1.6;
+        color: rgba(255,255,255,.6);
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .n-reflect li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--muted);
+      }
+
+      .n-reflect.improve li::before { background: var(--accent); }
+      .n-reflect.next li::before { background: rgba(232, 81, 236, .5); }
+
+      /* ── Conversion ── */
+      .n-conversion {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+        background: rgba(255,255,255,.06);
+      }
+
+      .n-conv-step {
+        background: var(--bg);
+        padding: 40px 28px;
+        text-align: center;
+      }
+
+      .n-conv-icon {
+        font-size: 32px;
+        margin-bottom: 16px;
+      }
+
+      .n-conv-step h4 {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 12px;
+      }
+
+      .n-conv-step p {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      /* ── Conversion Market Images ── */
+      .n-conv-images {
+        max-width: 1000px;
+        margin: 40px auto 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px;
+        background: rgba(255,255,255,.06);
+      }
+
+      .n-conv-images img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        transition: transform .6s ease;
+      }
+
+      .n-conv-images img:hover { transform: scale(1.02); }
+
+      /* ── Quote ── */
+      .n-quote {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 60px 0;
+      }
+
+      .n-quote blockquote {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(22px, 3.5vw, 36px);
+        line-height: 1.3;
+        color: var(--fg);
+      }
+
+      .n-quote blockquote em {
+        font-style: normal;
+        color: var(--accent);
+      }
+
+      /* ── Footer ── */
+      .n-footer {
+        padding: 80px 40px;
+        text-align: center;
+        border-top: 1px solid rgba(255,255,255,.06);
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      /* ── Scroll Reveal ── */
+      .n-section-head,
+      .n-stats,
+      .n-cases,
+      .n-insights,
+      .n-reflect,
+      .n-conversion,
+      .n-quote,
+      .n-strategies,
+      .n-conv-images {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1);
+      }
+
+      .n-section-head.revealed,
+      .n-stats.revealed,
+      .n-cases.revealed,
+      .n-insights.revealed,
+      .n-reflect.revealed,
+      .n-conversion.revealed,
+      .n-quote.revealed,
+      .n-strategies.revealed,
+      .n-conv-images.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .n-case { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+      .n-case.revealed { opacity: 1; transform: translateY(0); }
+      .n-case:nth-child(2) { transition-delay: .1s; }
+      .n-case:nth-child(3) { transition-delay: .2s; }
+      .n-case:nth-child(4) { transition-delay: .3s; }
+      .n-case:nth-child(5) { transition-delay: .4s; }
+
+      .n-strategy { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+      .n-strategy.revealed { opacity: 1; transform: translateY(0); }
+      .n-strategy:nth-child(2) { transition-delay: .15s; }
+
+      .n-insight { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+      .n-insight.revealed { opacity: 1; transform: translateY(0); }
+      .n-insight:nth-child(1) { transition-delay: 0s; }
+      .n-insight:nth-child(2) { transition-delay: .06s; }
+      .n-insight:nth-child(3) { transition-delay: .12s; }
+      .n-insight:nth-child(4) { transition-delay: .18s; }
+      .n-insight:nth-child(5) { transition-delay: .24s; }
+      .n-insight:nth-child(6) { transition-delay: .3s; }
+
+      .n-conv-step { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+      .n-conv-step.revealed { opacity: 1; transform: translateY(0); }
+      .n-conv-step:nth-child(1) { transition-delay: 0s; }
+      .n-conv-step:nth-child(2) { transition-delay: .08s; }
+      .n-conv-step:nth-child(3) { transition-delay: .16s; }
+      .n-conv-step:nth-child(4) { transition-delay: .24s; }
+
+      .n-reflect-col { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+      .n-reflect-col.revealed { opacity: 1; transform: translateY(0); }
+      .n-reflect-col:nth-child(2) { transition-delay: .12s; }
+      .n-reflect-col:nth-child(3) { transition-delay: .24s; }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+        .n-nav { padding: 16px 20px; }
+        .n-nav-links { gap: 20px; }
+        .n-section { padding: 80px 20px; }
+        .n-stats { grid-template-columns: 1fr 1fr; }
+        .n-strategies { grid-template-columns: 1fr; }
+        .n-strategy { grid-template-columns: 1fr; min-height: auto; }
+        .n-strategy-img { height: 220px; }
+        .n-case { grid-template-columns: 1fr; }
+        .n-case-img { height: 240px; }
+        .n-reflect { grid-template-columns: 1fr; gap: 40px; }
+        .n-conversion { grid-template-columns: 1fr; }
+        .n-conv-images { grid-template-columns: 1fr; }
+        .n-conv-images img { height: 200px; }
+        .n-insight { grid-template-columns: 36px 1fr; gap: 16px; padding: 24px 20px; }
+        .n-insight-num { font-size: 28px; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="n-nav">
+      <a href="./index.html" class="n-nav-brand">MURPHY ONG</a>
+      <div class="n-nav-links">
+        <a href="./work.html">Projects</a>
+        <a href="./index.html#about">About</a>
+        <a href="./resume.html">Resume</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="n-hero">
+      <div class="n-hero-bg"></div>
+      <div class="n-hero-content">
+        <div class="n-hero-year">NOTES — 2024</div>
+        <h1 class="n-hero-title">XIAOHONGSHU</h1>
+        <p class="n-hero-sub">亚文化垂类账号 · 内容运营案例</p>
+      </div>
+      <div class="n-hero-hint">SCROLL TO EXPLORE</div>
+    </section>
+
+    <!-- Overview -->
+    <section class="n-section">
+      <div class="n-section-head">
+        <div class="n-section-label">Overview</div>
+        <h2 class="n-section-title">项目概览</h2>
+        <p class="n-section-desc">以美术生真实身份为支点，打造「街头涂鸦 × 海娜手绘」垂类内容账号，探索亚文化 IP 联动与本地化流量策略的有机结合。</p>
+      </div>
+      <div class="n-stats">
+        <div class="n-stat">
+          <div class="n-stat-num">1.2万</div>
+          <div class="n-stat-label">最高单帖浏览</div>
+        </div>
+        <div class="n-stat">
+          <div class="n-stat-num">332</div>
+          <div class="n-stat-label">最高收藏</div>
+        </div>
+        <div class="n-stat">
+          <div class="n-stat-num">82</div>
+          <div class="n-stat-label">最高评论</div>
+        </div>
+        <div class="n-stat">
+          <div class="n-stat-num">39.7%</div>
+          <div class="n-stat-label">收藏率峰值</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Strategy -->
+    <section class="n-section">
+      <div class="n-section-head">
+        <div class="n-section-label">Strategy</div>
+        <h2 class="n-section-title">内容策略</h2>
+        <p class="n-section-desc">双线内容策略：以川大涂鸦打卡构建本地化流量入口，以成都海娜手绘建立品类标签与收藏转化。</p>
+      </div>
+      <div class="n-strategies">
+        <div class="n-strategy">
+          <img class="n-strategy-img" src="./assets/xhs-greenday-new.jpg" alt="川大涂鸦打卡" loading="lazy">
+          <div class="n-strategy-body">
+            <div class="n-strategy-tag">内容线 A</div>
+            <div class="n-strategy-title">川大涂鸦打卡</div>
+            <p class="n-strategy-desc">以四川大学江安校区白石桥洞下涂鸦墙为固定场景，将自身创作行为转化为可打卡的本地化内容。通过音乐 IP（Green Day）联动，放大内容共鸣与搜索流量。</p>
+            <div class="n-strategy-labels">
+              <span class="n-strategy-label">本地化</span>
+              <span class="n-strategy-label">IP 联动</span>
+              <span class="n-strategy-label">场景化</span>
+            </div>
+          </div>
+        </div>
+        <div class="n-strategy">
+          <img class="n-strategy-img" src="./assets/xhs-henna-2-new.jpg" alt="成都海娜手绘" loading="lazy">
+          <div class="n-strategy-body">
+            <div class="n-strategy-tag">内容线 B</div>
+            <div class="n-strategy-title">成都海娜手绘</div>
+            <p class="n-strategy-desc">以「成都海娜」作为品类标签，展示花胸手绘作品集合，兼顾时尚穿搭与刺青审美两类受众。高质量视觉封面驱动收藏转化，收藏率明显高于涂鸦系列，体现强参考价值属性。</p>
+            <div class="n-strategy-labels">
+              <span class="n-strategy-label">视觉驱动</span>
+              <span class="n-strategy-label">品类标签</span>
+              <span class="n-strategy-label">收藏转化</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Cases -->
+    <section class="n-section">
+      <div class="n-section-head">
+        <div class="n-section-label">Content</div>
+        <h2 class="n-section-title">爆款案例拆解</h2>
+      </div>
+      <div class="n-cases">
+        <div class="n-case">
+          <img class="n-case-img" src="./assets/xhs-henna-1-new.jpg" alt="成都海娜花胸" loading="lazy">
+          <div class="n-case-body">
+            <div class="n-case-tag">爆款</div>
+            <div class="n-case-title">成都海娜｜花胸</div>
+            <div class="n-case-metrics">
+              <div class="n-case-metric"><strong>310</strong><span>Likes</span></div>
+              <div class="n-case-metric"><strong>332</strong><span>Saves</span></div>
+              <div class="n-case-metric"><strong>1.2万</strong><span>Views</span></div>
+            </div>
+            <p class="n-case-desc">封面即内容，直接触发收藏行为；1.2 万浏览中转化赞藏率极高（约 8.7%）。</p>
+            <div class="n-case-highlight">封面即内容的视觉策略直接驱动收藏行为</div>
+          </div>
+        </div>
+        <div class="n-case">
+          <img class="n-case-img" src="./assets/xhs-nana-new.jpg" alt="川大江安打卡NANA" loading="lazy">
+          <div class="n-case-body">
+            <div class="n-case-tag">爆款</div>
+            <div class="n-case-title">我看川大江安的还有谁没去打卡 NANA</div>
+            <div class="n-case-metrics">
+              <div class="n-case-metric"><strong>196</strong><span>Likes</span></div>
+              <div class="n-case-metric"><strong>82</strong><span>Comments</span></div>
+              <div class="n-case-metric"><strong>1.1万</strong><span>Views</span></div>
+            </div>
+            <p class="n-case-desc">评论量 82 显示高互动，评论区出现大量打卡询问；「被蚊子咬」细节制造真实感与创作人格。</p>
+            <div class="n-case-highlight">群体感召句式 + 真实细节 = 高互动率</div>
+          </div>
+        </div>
+        <div class="n-case">
+          <img class="n-case-img" src="./assets/xhs-greenday-new.jpg" alt="川大江安Green Day" loading="lazy">
+          <div class="n-case-body">
+            <div class="n-case-tag">爆款</div>
+            <div class="n-case-title">或许你能在川大江安找到 Green Day</div>
+            <div class="n-case-metrics">
+              <div class="n-case-metric"><strong>148</strong><span>Likes</span></div>
+              <div class="n-case-metric"><strong>1万</strong><span>Views</span></div>
+            </div>
+            <p class="n-case-desc">地点标记「四川大学江安校区」强化本地打卡属性；音乐 IP 联动带来圈层精准流量。</p>
+            <div class="n-case-highlight">IP 联动 + 情绪共鸣 + 本地属性 = 精准流量</div>
+          </div>
+        </div>
+        <div class="n-case">
+          <img class="n-case-img" src="./assets/xhs-deathnote-new.jpg" alt="川大涂鸦Death Note L" loading="lazy">
+          <div class="n-case-body">
+            <div class="n-case-tag">爆款</div>
+            <div class="n-case-title">川大涂鸦 — Death Note L</div>
+            <div class="n-case-metrics">
+              <div class="n-case-metric"><strong>131</strong><span>Likes</span></div>
+              <div class="n-case-metric"><strong>43</strong><span>Comments</span></div>
+            </div>
+            <p class="n-case-desc">评论量 43 显示 ACG 粉主动互动；帖子与 NANA 帖共同构成「川大 ACG 涂鸦系列」内容矩阵。</p>
+            <div class="n-case-highlight">IP 矩阵化内容 + 圈层梗文案 = 高互动</div>
+          </div>
+        </div>
+        <div class="n-case">
+          <img class="n-case-img" src="./assets/xhs-henna-3.jpg" alt="成都海娜Syber Sigilism" loading="lazy">
+          <div class="n-case-body">
+            <div class="n-case-tag">蓝海</div>
+            <div class="n-case-title">成都海娜 — Syber Sigilism</div>
+            <div class="n-case-metrics">
+              <div class="n-case-metric"><strong>47</strong><span>Likes</span></div>
+              <div class="n-case-metric"><strong>48</strong><span>Saves</span></div>
+              <div class="n-case-metric"><strong>3,000</strong><span>Views</span></div>
+            </div>
+            <p class="n-case-desc">精准覆盖小众审美圈层，粉丝质量高；蓝海标签策略避开红海竞争。</p>
+            <div class="n-case-highlight">蓝海标签 + 高收藏率 = 精准高质量粉丝</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section class="n-section n-section--compact">
+      <div class="n-section-head">
+        <div class="n-section-label">Methodology</div>
+        <h2 class="n-section-title">运营方法论</h2>
+      </div>
+      <div class="n-insights">
+        <div class="n-insight">
+          <div class="n-insight-num">01</div>
+          <div>
+            <h4>地域标签锁流量</h4>
+            <p>「川大江安校区」「成都海娜」等地域标签精准锁定本地用户，搜索流量持续带来新用户，私信咨询量显著增长。</p>
+          </div>
+        </div>
+        <div class="n-insight">
+          <div class="n-insight-num">02</div>
+          <div>
+            <h4>IP 联动借势</h4>
+            <p>通过 Green Day、Death Note、NANA 等热门 IP 跨界联动获取初始流量，无需付费推广即可完成账号冷启动。</p>
+          </div>
+        </div>
+        <div class="n-insight">
+          <div class="n-insight-num">03</div>
+          <div>
+            <h4>身份即内容</h4>
+            <p>以美术生真实身份为切入点，内容天然具备可信度与差异化，避免同质化竞争。「被蚊子咬」等细节制造真实感与创作人格。</p>
+          </div>
+        </div>
+        <div class="n-insight">
+          <div class="n-insight-num">04</div>
+          <div>
+            <h4>双线内容互补</h4>
+            <p>涂鸦线负责流量曝光与互动，海娜线负责收藏转化与商业价值，两条内容线覆盖不同用户行为，数据表现均衡。</p>
+          </div>
+        </div>
+        <div class="n-insight">
+          <div class="n-insight-num">05</div>
+          <div>
+            <h4>封面即文案</h4>
+            <p>高赞帖封面均具备强视觉辨识度（涂鸦人物 / 花胸特写），封面信息密度与点击欲望成正比，封面即内容的策略直接驱动收藏行为。</p>
+          </div>
+        </div>
+        <div class="n-insight">
+          <div class="n-insight-num">06</div>
+          <div>
+            <h4>蓝海标签策略</h4>
+            <p>「Syber Sigilism」等小众风格关键词竞争度低但精准，找到细分圈层比追热点更易形成稳定互动，收藏率远超平台均值。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conversion -->
+    <section class="n-section">
+      <div class="n-section-head">
+        <div class="n-section-label">Conversion</div>
+        <h2 class="n-section-title">转化路径</h2>
+        <p class="n-section-desc">从内容曝光到预约订单的完整闭环</p>
+      </div>
+      <div class="n-conversion">
+        <div class="n-conv-step">
+          <div class="n-conv-icon">📱</div>
+          <h4>线上曝光</h4>
+          <p>小红书涂鸦与海娜内容积累本地关注度，搜索流量持续带来新用户</p>
+        </div>
+        <div class="n-conv-step">
+          <div class="n-conv-icon">📍</div>
+          <h4>本地引流</h4>
+          <p>地域标签精准锁定成都本地用户，私信咨询量显著增长</p>
+        </div>
+        <div class="n-conv-step">
+          <div class="n-conv-icon">🎪</div>
+          <h4>线下出摊</h4>
+          <p>受邀参加 NEED! 市集品牌活动，线上流量转化为线下体验</p>
+        </div>
+        <div class="n-conv-step">
+          <div class="n-conv-icon">💰</div>
+          <h4>预约变现</h4>
+          <p>市集 + 内容形成闭环，大量用户私信预约海娜手绘服务</p>
+        </div>
+      </div>
+      <div class="n-conv-images">
+        <img src="./assets/need-markets-1.jpg" alt="NEED! 市集现场" loading="lazy">
+        <img src="./assets/need-markets-2.jpg" alt="NEED! 市集现场" loading="lazy">
+      </div>
+    </section>
+
+    <!-- Reflection -->
+    <section class="n-section">
+      <div class="n-section-head">
+        <div class="n-section-label">Reflection</div>
+        <h2 class="n-section-title">复盘总结</h2>
+      </div>
+      <div class="n-reflect">
+        <div class="n-reflect-col good">
+          <h4>做得好的</h4>
+          <ul>
+            <li>成功验证亚文化垂类内容在小红书的可行性</li>
+            <li>通过 IP 联动实现冷启动，无需付费推广</li>
+            <li>双线策略覆盖不同用户行为，数据表现均衡</li>
+          </ul>
+        </div>
+        <div class="n-reflect-col improve">
+          <h4>可以改进的</h4>
+          <ul>
+            <li>更新频率不稳定，影响账号权重</li>
+            <li>未建立评论区互动机制，错失社群沉淀机会</li>
+            <li>缺乏商业变现路径的系统设计</li>
+          </ul>
+        </div>
+        <div class="n-reflect-col next">
+          <h4>下一步</h4>
+          <ul>
+            <li>建立内容日历，保持稳定更新节奏</li>
+            <li>尝试直播创作过程，增强粉丝粘性</li>
+            <li>探索海娜预约变现模式，打通商业闭环</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="n-section n-section--compact">
+      <div class="n-quote">
+        <blockquote>亚文化垂类内容天然具备高粘性，通过<em>内容 → 社群 → 线下 → 变现</em>的闭环，可以实现从兴趣到收入的完整转化路径。</blockquote>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="n-footer">© 2026 Murphy Ong 王梦晖 — Xiaohongshu Content Operations</footer>
+
+    <script>
+    (() => {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) en.target.classList.add('revealed');
+        });
+      }, { threshold: .1 });
+
+      const sel = '.n-section-head, .n-stats, .n-cases, .n-insights, .n-reflect, .n-conversion, .n-quote, .n-case, .n-insight, .n-conv-step, .n-reflect-col, .n-strategies, .n-strategy, .n-conv-images';
+      document.querySelectorAll(sel).forEach(el => io.observe(el));
+
+      /* Parallax hero */
+      const heroBg = document.querySelector('.n-hero-bg');
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if (y < innerHeight) heroBg.style.transform = `scale(1.1) translateY(${y * .3}px)`;
+      }, { passive: true });
+    })();
+    </script>
+  </body>
+</html>

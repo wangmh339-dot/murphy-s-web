@@ -117,18 +117,20 @@ window.PROJECTS = [
       images: ["./assets/need-markets-1.jpg", "./assets/need-markets-2.jpg"],
       note: "<strong>核心洞察：</strong>亚文化垂类内容天然具备高粘性，通过「内容 → 社群 → 线下 → 变现」的闭环，可以实现从兴趣到收入的完整转化路径。"
     },
-    link: "https://www.xiaohongshu.com/user/profile/5f5f5f5f5f5f5f5f5f5f5f5f"
+    link: "./xiaohongshu.html"
   },
   {
-    id: "space-design-01",
-    title: "空间设计 — 春熙家树工作室",
-    year: "2024",
+    id: "sculpture-01",
+    title: "流水别墅 — Fallingwater Sculpture",
+    titleEn: "Fallingwater — Architectural Sculpture Model",
+    year: "2023",
     category: "design",
-    tags: ["空间设计", "商业空间", "住宅"],
-    preview: "./assets/project-placeholder.svg",
-    deck: "参与商业空间与住宅项目的全流程设计支持。",
-    details: "建议补充：项目类型、设计流程、软件工具、成果展示。",
-    link: ""
+    tags: ["雕塑", "建筑模型", "流水别墅"],
+    preview: "./assets/sculpture/1.JPG",
+    cover: "./assets/sculpture/1.JPG",
+    deck: "以弗兰克·劳埃德·赖特的流水别墅为蓝本，手工制作的建筑雕塑模型。",
+    details: "通过综合材料忠实还原流水别墅的标志性悬挑结构与自然共生哲学。",
+    link: "./sculpture.html"
   },
   {
     id: "lab-vibecoding-01",
@@ -138,8 +140,8 @@ window.PROJECTS = [
     category: "lab",
     template: "experiment",
     tags: ["AI Coding", "产品探索", "信息架构", "React", "Vite"],
-    preview: "./assets/project-placeholder.svg",
-    cover: "./assets/project-placeholder.svg",
+    preview: "./assets/lab-preview.jpg",
+    cover: "./assets/lab-preview.jpg",
     deck: "将个人网站作为 AI 协作式产品实验，探索信息架构、内容系统与 AI 在个人创作中的角色。",
     details: "这个项目最开始只是想搭建一个个人网站。但在真正开始之后，我逐渐意识到：我想做的并不只是一个「作品展示页」。我开始把它当作一次 AI 协作式产品实验——用来探索信息架构、内容系统与 AI 在个人创作中真正扮演的角色。",
     experiment: {
@@ -262,7 +264,7 @@ window.PROJECTS = [
       { title: "方法沉淀", desc: "将 Vibe Coding Prompt 方法系统化整理" },
       { title: "框架重构", desc: "探索 Astro 框架重构以支持更好的内容管理" }
     ],
-    link: "https://wangmh339-dot.github.io/murphy-s-web/"
+    link: "./lab.html"
   },
   {
     id: "product-proto-01",

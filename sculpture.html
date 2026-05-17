@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fallingwater — Murphy Ong 王梦晖</title>
+    <meta name="description" content="流水别墅建筑雕塑模型 — 2023" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./fonts.css?v=20260514_4" />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --fg: #f5f5f5;
+        --muted: #666;
+        --accent: #e851ec;
+        --dark: #0a0a0a;
+        --white: #ffffff;
+      }
+
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* ── Navigation ── */
+      .d-nav {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 100;
+        padding: 24px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        mix-blend-mode: difference;
+      }
+
+      .d-nav a {
+        color: #fff;
+        text-decoration: none;
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 14px;
+        letter-spacing: .05em;
+        transition: opacity .3s;
+      }
+
+      .d-nav a:hover { opacity: .6; }
+      .d-nav-brand { font-weight: 500; }
+      .d-nav-links { display: flex; gap: 32px; }
+
+      /* ── Hero ── */
+      .d-hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 40px;
+        background: var(--dark);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .d-hero-bg {
+        position: absolute;
+        inset: 0;
+        opacity: .15;
+        background: url('./assets/sculpture/1.JPG') center/cover no-repeat;
+        filter: grayscale(100%);
+        transform: scale(1.1);
+        transition: transform 8s ease-out;
+      }
+
+      .d-hero:hover .d-hero-bg { transform: scale(1); }
+
+      .d-hero-content { position: relative; z-index: 1; }
+
+      .d-hero-year {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        letter-spacing: .2em;
+        color: var(--accent);
+        margin-bottom: 24px;
+      }
+
+      .d-hero-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(60px, 12vw, 160px);
+        letter-spacing: -.02em;
+        white-space: nowrap;
+        line-height: .9;
+        margin-bottom: 16px;
+      }
+
+      .d-hero-sub {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 14px;
+        color: rgba(255,255,255,.5);
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+
+      .d-hero-hint {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        font-size: 12px;
+        color: rgba(255,255,255,.4);
+        letter-spacing: .1em;
+        animation: dHint 2s infinite;
+      }
+
+      @keyframes dHint {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50%      { transform: translateX(-50%) translateY(-10px); }
+      }
+
+      /* ── Intro Section ── */
+      .d-intro {
+        padding: 160px 40px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .d-intro-label {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: .15em;
+        text-transform: uppercase;
+        margin-bottom: 32px;
+      }
+
+      .d-intro-text {
+        font-size: clamp(20px, 3vw, 32px);
+        line-height: 1.6;
+        font-weight: 300;
+        color: var(--fg);
+      }
+
+      .d-intro-text em {
+        font-style: normal;
+        color: var(--accent);
+      }
+
+      /* ── Fullscreen Image Reveal ── */
+      .d-reveal {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .d-reveal-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 1.2s cubic-bezier(.16,1,.3,1);
+      }
+
+      .d-reveal:hover .d-reveal-img {
+        transform: scale(1.03);
+      }
+
+      .d-reveal-caption {
+        position: absolute;
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        color: #fff;
+        text-shadow: 0 2px 20px rgba(0,0,0,.5);
+      }
+
+      .d-reveal-caption span {
+        display: block;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(24px, 4vw, 48px);
+        letter-spacing: .02em;
+      }
+
+      .d-reveal-caption small {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 12px;
+        letter-spacing: .15em;
+        opacity: .7;
+        margin-top: 8px;
+      }
+
+      /* ── Detail Grid ── */
+      .d-details {
+        padding: 120px 40px;
+        background: var(--dark);
+        color: #fff;
+      }
+
+      .d-details-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .d-detail-img {
+        width: 100%;
+        aspect-ratio: 3/2;
+        object-fit: cover;
+        border-radius: 4px;
+        transition: transform .8s ease;
+      }
+
+      .d-detail-img:hover { transform: scale(1.02); }
+
+      .d-detail-content h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(36px, 5vw, 64px);
+        letter-spacing: -.01em;
+        white-space: nowrap;
+        margin-bottom: 24px;
+        line-height: 1;
+      }
+
+      .d-detail-content p {
+        font-size: 16px;
+        line-height: 1.8;
+        color: rgba(255,255,255,.65);
+        margin-bottom: 20px;
+      }
+
+      .d-detail-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(255,255,255,.1);
+      }
+
+      .d-meta-label {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 6px;
+      }
+
+      .d-meta-value {
+        font-size: 15px;
+        color: rgba(255,255,255,.8);
+      }
+
+      /* ── Split Screen Section ── */
+      .d-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+      }
+
+      .d-split-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .d-split-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 80px;
+        background: var(--white);
+      }
+
+      .d-split-text blockquote {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(28px, 3.5vw, 48px);
+        line-height: 1.2;
+        letter-spacing: -.01em;
+        color: var(--dark);
+        margin-bottom: 32px;
+        border-left: 3px solid var(--accent);
+        padding-left: 24px;
+      }
+
+      .d-split-text p {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--muted);
+      }
+
+      /* ── Process Timeline ── */
+      .d-process {
+        padding: 120px 40px;
+        background: var(--dark);
+        color: #fff;
+      }
+
+      .d-process-head {
+        text-align: center;
+        margin-bottom: 80px;
+      }
+
+      .d-process-head h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(36px, 6vw, 72px);
+        letter-spacing: -.02em;
+        white-space: nowrap;
+      }
+
+      .d-process-head p {
+        font-size: 14px;
+        color: rgba(255,255,255,.4);
+        letter-spacing: .1em;
+        margin-top: 12px;
+      }
+
+      .d-timeline {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .d-timeline-item {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 40px;
+        padding: 40px 0;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all .6s ease;
+      }
+
+      .d-timeline-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .d-timeline-num {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 48px;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .d-timeline-body h4 {
+        font-family: 'Space Grotesk', 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+        font-size: 14px;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .d-timeline-body p {
+        font-size: 15px;
+        line-height: 1.7;
+        color: rgba(255,255,255,.55);
+      }
+
+      /* ── Footer ── */
+      .d-footer {
+        padding: 80px 40px;
+        text-align: center;
+        background: var(--white);
+        font-size: 14px;
+        color: var(--muted);
+        border-top: 1px solid rgba(0,0,0,.08);
+      }
+
+      /* ── Scroll Reveal ── */
+      .d-intro,
+      .d-reveal,
+      .d-details-inner,
+      .d-split-text,
+      .d-process-head,
+      .d-timeline-item {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1);
+      }
+
+      .d-intro.revealed,
+      .d-reveal.revealed,
+      .d-details-inner.revealed,
+      .d-split-text.revealed,
+      .d-process-head.revealed,
+      .d-timeline-item.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .d-timeline-item:nth-child(2) { transition-delay: .1s; }
+      .d-timeline-item:nth-child(3) { transition-delay: .2s; }
+      .d-timeline-item:nth-child(4) { transition-delay: .3s; }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+        .d-nav { padding: 16px 20px; }
+        .d-nav-links { gap: 20px; }
+        .d-intro { padding: 100px 24px; }
+        .d-details-inner { grid-template-columns: 1fr; gap: 40px; }
+        .d-split { grid-template-columns: 1fr; }
+        .d-split-text { padding: 40px 24px; }
+        .d-timeline-item { grid-template-columns: 60px 1fr; gap: 20px; }
+        .d-timeline-num { font-size: 32px; }
+        .d-detail-meta { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="d-nav">
+      <a href="./index.html" class="d-nav-brand">MURPHY ONG</a>
+      <div class="d-nav-links">
+        <a href="./work.html">Projects</a>
+        <a href="./index.html#about">About</a>
+        <a href="./resume.html">Resume</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="d-hero">
+      <div class="d-hero-bg"></div>
+      <div class="d-hero-content">
+        <div class="d-hero-year">SCULPTURE — 2023</div>
+        <h1 class="d-hero-title">Fallingwater</h1>
+        <p class="d-hero-sub">流水别墅 · 建筑雕塑模型</p>
+      </div>
+      <div class="d-hero-hint">SCROLL TO EXPLORE</div>
+    </section>
+
+    <!-- Intro -->
+    <section class="d-intro">
+      <div class="d-intro-label">Concept</div>
+      <p class="d-intro-text">
+        以弗兰克·劳埃德·赖特的<em>流水别墅</em>为蓝本，通过手工雕塑的方式重新诠释这座二十世纪最伟大的建筑之一。模型忠实还原了建筑与自然<em>共生</em>的核心哲学——悬挑的露台、层叠的岩石、与瀑布融为一体的空间叙事。
+      </p>
+    </section>
+
+    <!-- Fullscreen Reveal 1 -->
+    <section class="d-reveal">
+      <img class="d-reveal-img" src="./assets/sculpture/1.JPG" alt="流水别墅雕塑模型全景" loading="lazy">
+      <div class="d-reveal-caption">
+        <span>Fallingwater Model</span>
+        <small>全景视角 · 手工雕塑</small>
+      </div>
+    </section>
+
+    <!-- Detail -->
+    <section class="d-details">
+      <div class="d-details-inner">
+        <img class="d-detail-img" src="./assets/sculpture/2.JPG" alt="流水别墅雕塑模型细节" loading="lazy">
+        <div class="d-detail-content">
+          <h3>建筑与自然的对话</h3>
+          <p>
+            流水别墅（Fallingwater）是赖特于1935年设计的住宅，坐落于宾夕法尼亚州熊跑溪的瀑布之上。建筑从岩石中生长而出，悬挑的混凝土露台与周围森林形成有机的整体。
+          </p>
+          <p>
+            这件雕塑模型以1:100的比例还原了建筑的标志性特征——层叠的水平线条、穿插的竖向岩体、以及水从建筑下方流过的戏剧性空间关系。
+          </p>
+          <div class="d-detail-meta">
+            <div>
+              <div class="d-meta-label">Year</div>
+              <div class="d-meta-value">2023</div>
+            </div>
+            <div>
+              <div class="d-meta-label">Type</div>
+              <div class="d-meta-value">建筑雕塑模型</div>
+            </div>
+            <div>
+              <div class="d-meta-label">Original</div>
+              <div class="d-meta-value">Frank Lloyd Wright, 1935</div>
+            </div>
+            <div>
+              <div class="d-meta-label">Material</div>
+              <div class="d-meta-value">综合材料</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Split Screen -->
+    <section class="d-split">
+      <img class="d-split-img" src="./assets/sculpture/1.JPG" alt="流水别墅雕塑" loading="lazy">
+      <div class="d-split-text">
+        <blockquote>
+          "No house should ever be on a hill or on anything. It should be of the hill. Belonging to it."
+        </blockquote>
+        <p>—— 弗兰克·劳埃德·赖特</p>
+        <p style="margin-top: 16px;">
+          赖特相信建筑应当从场地中自然生长。流水别墅正是这一哲学的极致表达——建筑不是被放置在景观之上，而是景观的一部分。这件雕塑试图捕捉的，正是这种"属于"的关系。
+        </p>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="d-process">
+      <div class="d-process-head">
+        <h2>PROCESS</h2>
+        <p>创作过程</p>
+      </div>
+      <div class="d-timeline">
+        <div class="d-timeline-item">
+          <div class="d-timeline-num">01</div>
+          <div class="d-timeline-body">
+            <h4>Research · 调研</h4>
+            <p>深入研究流水别墅的建筑图纸、历史照片与赖特的设计理念，理解建筑与场地的关系、结构系统的创新，以及空间叙事的逻辑。</p>
+          </div>
+        </div>
+        <div class="d-timeline-item">
+          <div class="d-timeline-num">02</div>
+          <div class="d-timeline-body">
+            <h4>Design · 设计</h4>
+            <p>确定模型比例与材料方案，规划悬挑结构的支撑方式，推敲岩石、瀑布与建筑的层次关系，确保模型能传达原作的空间张力。</p>
+          </div>
+        </div>
+        <div class="d-timeline-item">
+          <div class="d-timeline-num">03</div>
+          <div class="d-timeline-body">
+            <h4>Fabrication · 制作</h4>
+            <p>以综合材料手工搭建主体结构，逐层塑造混凝土质感的悬挑露台，雕刻岩石基座与瀑布水景，反复调整各部分的比例与细节。</p>
+          </div>
+        </div>
+        <div class="d-timeline-item">
+          <div class="d-timeline-num">04</div>
+          <div class="d-timeline-body">
+            <h4>Refinement · 打磨</h4>
+            <p>对表面质感进行精细处理，强化材料的表现力，调整光影效果，最终呈现一件能够传达流水别墅精神气质的雕塑作品。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="d-footer">© 2026 Murphy Ong 王梦晖 — Fallingwater Sculpture</footer>
+
+    <script>
+    (() => {
+      /* ── Scroll Reveal ── */
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) en.target.classList.add('revealed');
+        });
+      }, { threshold: .1 });
+
+      document.querySelectorAll('.d-intro, .d-reveal, .d-details-inner, .d-split-text, .d-process-head, .d-timeline-item').forEach(el => io.observe(el));
+
+      /* ── Parallax on hero bg ── */
+      const heroBg = document.querySelector('.d-hero-bg');
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        if (scrollY < window.innerHeight) {
+          heroBg.style.transform = `scale(1.1) translateY(${scrollY * .3}px)`;
+        }
+      }, { passive: true });
+    })();
+    </script>
+  </body>
+</html>
